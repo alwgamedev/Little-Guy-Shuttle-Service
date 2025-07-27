@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 5405145560198378217}
   - component: {fileID: 4190369995327947988}
   - component: {fileID: 2500722956170739175}
+  - component: {fileID: 6163258705638636367}
+  - component: {fileID: 5868953112784160597}
   m_Layer: 7
   m_Name: Little Guy
   m_TagString: Untagged
@@ -68,10 +70,31 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_Mass: 2.5
+  m_LinearDamping: 0.1
+  m_AngularDamping: 15
   m_GravityScale: 1
+  m_Material: {fileID: 6200000, guid: ea02a5ea88c1468438489f6922272348, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 1
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
+--- !u!70 &6163258705638636367
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4740548018320934682}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -79,10 +102,44 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0.55}
+  m_Size: {x: 0.6, y: 1.075}
+  m_Direction: 0
+--- !u!114 &5868953112784160597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4740548018320934682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ae98c486b226ff48926f3e7b3a228e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontFoot: {fileID: 23857889852188722}
+  backFoot: {fileID: 7542762909627272161}
+  balanceStrength: 75
+  balanceBreakAngle: 60
+  acceleration: 8
+  destinationTolerance: 0.5
 --- !u!1001 &7924577618380077852
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -560,6 +617,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 4843985084834002234, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+--- !u!4 &23857889852188722 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7902977062715314990, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+  m_PrefabInstance: {fileID: 7924577618380077852}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7542762909627272161 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8839290923878878979, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+  m_PrefabInstance: {fileID: 7924577618380077852}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8851287752367129282 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7552582706839291426, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}

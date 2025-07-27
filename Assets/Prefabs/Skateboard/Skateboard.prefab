@@ -402,9 +402,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c6c2705c4b48644abd970c100819aaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frontWheel: {fileID: 9142997196256863473}
-  rearWheel: {fileID: 5281303057212262898}
-  torque: 75
+  board: {fileID: 2423346466729361443}
+  acceleration: 12.5
 --- !u!1 &4810287471070940041
 GameObject:
   m_ObjectHideFlags: 0

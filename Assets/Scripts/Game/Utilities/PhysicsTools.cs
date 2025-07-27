@@ -30,6 +30,12 @@ namespace LGShuttle.Game
             return d1 + Mathf.Clamp(rotationalSpeed * dt / d.magnitude, 0, 1) * d;
         }
 
+        //public static Vector2 SpringLikeRotationalTweenClamped(Vector2 d1, Vector2 d2, float rotationalSpeed, float dt)
+        //{
+        //    var d = d2 - d1;
+        //    return d1 + Mathf.Clamp(rotationalSpeed * dt, 0, 1) * d;
+        //}
+
         /// <summary>
         /// Reflect v across hyperplane perpendicular to unit vector u.
         /// </summary>
@@ -144,5 +150,12 @@ namespace LGShuttle.Game
                 rotationalSpeed, Time.deltaTime);
             t.rotation = Quaternion.LookRotation(t.forward, tweened);
         }
+
+        //public static void SpringTransformUpTowards(this Transform t, Vector2 goalTransformUp, float rotationalSpeed)
+        //{
+        //    var tweened = SpringLikeRotationalTweenClamped(t.up, goalTransformUp,
+        //        rotationalSpeed, Time.deltaTime);
+        //    t.rotation = Quaternion.LookRotation(t.forward, tweened);
+        //}
     }
 }
