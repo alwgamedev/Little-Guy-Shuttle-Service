@@ -12,7 +12,7 @@ TagManager:
   - Water
   - UI
   - Skateboard
-  - 
+  - Little Guys
   - 
   - 
   - 
@@ -40,6 +40,27 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 2805192849
+    locked: 0
+  - name: WorldObjects0
+    uniqueID: 3418488869
+    locked: 0
+  - name: LittleGuys
+    uniqueID: 93097997
+    locked: 0
+  - name: WorldObjects1
+    uniqueID: 1360932105
+    locked: 0
+  - name: Ground
+    uniqueID: 1087600745
+    locked: 0
+  - name: WorldObjects2
+    uniqueID: 83217457
+    locked: 0
+  - name: Foreground
+    uniqueID: 801989597
     locked: 0
   m_RenderingLayers:
   - Default

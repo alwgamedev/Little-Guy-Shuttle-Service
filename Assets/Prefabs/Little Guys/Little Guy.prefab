@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5405145560198378217}
   - component: {fileID: 4190369995327947988}
-  m_Layer: 0
+  - component: {fileID: 2500722956170739175}
+  m_Layer: 7
   m_Name: Little Guy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,6 +56,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!50 &2500722956170739175
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4740548018320934682}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1001 &7924577618380077852
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -63,6 +91,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5405145560198378217}
     m_Modifications:
+    - target: {fileID: -8925286317113137940, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: -8854889053627997875, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.9999996
@@ -83,17 +115,37 @@ PrefabInstance:
       propertyPath: m_Name
       value: little guy
       objectReference: {fileID: 0}
+    - target: {fileID: -8653719598885068355, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -8034143615254441019, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -8034143615254441019, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 93097997
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.075
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.075
+      objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.7182503
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.524785
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.08601763
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -131,13 +183,49 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.0000001091141
       objectReference: {fileID: 0}
+    - target: {fileID: -6710546953330680238, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -6710546953330680238, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 93097997
+      objectReference: {fileID: 0}
     - target: {fileID: -5139837630983686176, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_Name
       value: bicep back bone
       objectReference: {fileID: 0}
+    - target: {fileID: -5139837630983686176, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: -4857958987239996215, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_Name
       value: calf back bone
+      objectReference: {fileID: 0}
+    - target: {fileID: -4857958987239996215, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -4722141291059757952, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4722141291059757952, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 93097997
+      objectReference: {fileID: 0}
+    - target: {fileID: -4024723924065745473, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -4007109606741939464, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4007109606741939464, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 93097997
       objectReference: {fileID: 0}
     - target: {fileID: -3484926005549318989, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_LocalScale.x
@@ -155,9 +243,17 @@ PrefabInstance:
       propertyPath: m_LocalRotation.w
       value: 0.9960099
       objectReference: {fileID: 0}
+    - target: {fileID: -3210546026927269810, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: -3145382201746366490, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_Name
       value: forearm back bone
+      objectReference: {fileID: 0}
+    - target: {fileID: -3145382201746366490, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: -2978984936461578496, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -179,6 +275,18 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.9949219
       objectReference: {fileID: 0}
+    - target: {fileID: -2252520625005374867, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -2200998978955650983, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -2200998978955650983, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 93097997
+      objectReference: {fileID: 0}
     - target: {fileID: -2114717017327982363, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.509441
@@ -195,25 +303,73 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.07064679
       objectReference: {fileID: 0}
+    - target: {fileID: -1723869975640454967, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -825289701315894021, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -825289701315894021, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 93097997
+      objectReference: {fileID: 0}
     - target: {fileID: -780156384609703048, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_Name
       value: foot front bone
+      objectReference: {fileID: 0}
+    - target: {fileID: -780156384609703048, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -448734438874193016, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -448734438874193016, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 93097997
       objectReference: {fileID: 0}
     - target: {fileID: 59259804675962326, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_Name
       value: thigh back bone
       objectReference: {fileID: 0}
+    - target: {fileID: 59259804675962326, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 386791141387813222, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_Name
       value: body bone
+      objectReference: {fileID: 0}
+    - target: {fileID: 386791141387813222, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 613742145289411635, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_Name
       value: bicep front bone
       objectReference: {fileID: 0}
+    - target: {fileID: 613742145289411635, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2037590412929045145, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3116419856593527359, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 3297364353584691495, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_Name
       value: head bone
+      objectReference: {fileID: 0}
+    - target: {fileID: 3297364353584691495, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4257508509235537429, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -231,9 +387,17 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.7135888
       objectReference: {fileID: 0}
+    - target: {fileID: 4426061300000569703, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 4427455769572090415, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_Name
       value: forearm front bone
+      objectReference: {fileID: 0}
+    - target: {fileID: 4427455769572090415, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4808532571273057128, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -251,6 +415,22 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.2240452
       objectReference: {fileID: 0}
+    - target: {fileID: 5151968689220088887, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151968689220088887, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 93097997
+      objectReference: {fileID: 0}
+    - target: {fileID: 5329297502770107586, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5329297502770107586, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 93097997
+      objectReference: {fileID: 0}
     - target: {fileID: 5554665689531842209, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.3040458
@@ -266,6 +446,14 @@ PrefabInstance:
     - target: {fileID: 5554665689531842209, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.9998806
+      objectReference: {fileID: 0}
+    - target: {fileID: 5587689207069148713, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5587689207069148713, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 93097997
       objectReference: {fileID: 0}
     - target: {fileID: 5795632446533788999, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -283,17 +471,53 @@ PrefabInstance:
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6108646312865440033, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6181300385887193387, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_Name
       value: thigh front bone
+      objectReference: {fileID: 0}
+    - target: {fileID: 6181300385887193387, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657182271965190198, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657182271965190198, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 93097997
+      objectReference: {fileID: 0}
+    - target: {fileID: 6945286005191662177, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7020560282433457941, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7345064713619423263, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7627224124661829960, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_Name
       value: foot back bone
       objectReference: {fileID: 0}
+    - target: {fileID: 7627224124661829960, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7775287663641171667, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_Name
       value: calf front bone
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775287663641171667, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7902977062715314990, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -306,6 +530,14 @@ PrefabInstance:
     - target: {fileID: 7902977062715314990, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.6525
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179351089276895720, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179351089276895720, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 93097997
       objectReference: {fileID: 0}
     - target: {fileID: 8648882755762834919, guid: e72aa8d73fe3db24a83b6c85c07b6cb7, type: 3}
       propertyPath: m_LocalPosition.x

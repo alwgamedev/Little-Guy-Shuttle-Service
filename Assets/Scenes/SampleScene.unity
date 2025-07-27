@@ -146,7 +146,7 @@ Transform:
   m_GameObject: {fileID: 40513305}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -38.88824, y: 3.6173964, z: -10.079341}
+  m_LocalPosition: {x: -37.288242, y: 3.4973965, z: -10.079341}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -196,7 +196,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 40
-    OrthographicSize: 14
+    OrthographicSize: 11.5
     NearClipPlane: 0.1
     FarClipPlane: 5000
     Dutch: 0
@@ -354,7 +354,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 14
+  orthographic size: 11.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -379,7 +379,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0000000037206656, y: -2.2419751e-10, z: 8.3416393e-19, w: 1}
-  m_LocalPosition: {x: -38.88824, y: 3.6173964, z: -10.079341}
+  m_LocalPosition: {x: -37.288242, y: 3.4973965, z: -10.079341}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -454,7 +454,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 000000002500c2cb91d833a70d908c05092d1e516978d34031ccf504dd63cd2f
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -560,8 +560,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1087600745
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -650,11 +650,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1314298860905894335, guid: 2b7622d782c1f0045ba6e56f284cfa81, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -39.01
+      value: -37.41
       objectReference: {fileID: 0}
     - target: {fileID: 1314298860905894335, guid: 2b7622d782c1f0045ba6e56f284cfa81, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.63
+      value: -2.75
       objectReference: {fileID: 0}
     - target: {fileID: 1314298860905894335, guid: 2b7622d782c1f0045ba6e56f284cfa81, type: 3}
       propertyPath: m_LocalPosition.z
@@ -692,18 +692,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skateboard
       objectReference: {fileID: 0}
-    - target: {fileID: 6899612066508476658, guid: 2b7622d782c1f0045ba6e56f284cfa81, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6899612066508476658, guid: 2b7622d782c1f0045ba6e56f284cfa81, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6899612066508476658, guid: 2b7622d782c1f0045ba6e56f284cfa81, type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -723,15 +711,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5405145560198378217, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -39.862373
+      value: -38.61
       objectReference: {fileID: 0}
     - target: {fileID: 5405145560198378217, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.5924225
+      value: -1.72
       objectReference: {fileID: 0}
     - target: {fileID: 5405145560198378217, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.08601763
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5405145560198378217, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
       propertyPath: m_LocalRotation.w
