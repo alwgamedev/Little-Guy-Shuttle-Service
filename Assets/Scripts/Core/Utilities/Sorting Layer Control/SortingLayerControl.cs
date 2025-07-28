@@ -22,7 +22,19 @@ namespace LGShuttle.Core
 
             }
         }
-        public int? SortingOrder => sortingOrder;
+        public int? SortingOrder
+        {
+            get => sortingOrder;
+            set
+            {
+                if (value.HasValue)
+                {
+                    sortingOrder = value.Value;
+                    UpdateSortingData();
+                }
+
+            }
+        }
 
         private void OnValidate()
         {

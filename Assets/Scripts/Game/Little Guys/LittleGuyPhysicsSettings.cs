@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LGShuttle.Core;
+using System;
 using UnityEngine;
 
 namespace LGShuttle.Game
@@ -17,7 +18,7 @@ namespace LGShuttle.Game
         public float walkSpeed;
         public float runSpeed;
         public float accelMultiplier;
-        public float accelerationDampTime;
+        public RandomizableFloat randomAccelerationDampTime;
 
         [Header("Logic")]
         public float destinationTolerance;

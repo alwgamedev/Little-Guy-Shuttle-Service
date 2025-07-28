@@ -365,6 +365,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1314298860905894335}
   - component: {fileID: 930929982443723566}
+  - component: {fileID: 5383399818355129279}
   m_Layer: 6
   m_Name: Skateboard
   m_TagString: Untagged
@@ -403,8 +404,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   board: {fileID: 2423346466729361443}
-  boardCollider: {fileID: 8825501302532279981}
-  acceleration: 12.5
+  frontWheel: {fileID: 1232362380311639821}
+  backWheel: {fileID: 8044994112398815668}
+  acceleration: 15
+  torque: 10
+  jumpCooldown: 0.25
+  jumpImpulseForce: 6
+  jumpHoldForce: 5
+  jumpHoldMinUpwardVelocity: 2
   randomBoardAnchorPosition:
     mode: 0
     boundsSource: 0
@@ -412,6 +419,24 @@ MonoBehaviour:
     maxTransform: {fileID: 4931290026107218523}
     minPosition: {x: 0, y: 0}
     maxPosition: {x: 0, y: 0}
+--- !u!114 &5383399818355129279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4510342685166942249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cfd6398eebcb7246b901ed05812cb5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lgPrefab: {fileID: 1664298842843999412, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
+  spawnHeightFactor:
+    mode: 0
+    min: 0.75
+    max: 2
+  quantityToSpawn: 10
 --- !u!1 &4810287471070940041
 GameObject:
   m_ObjectHideFlags: 0
@@ -874,8 +899,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 50
-  m_LinearDamping: 0.25
-  m_AngularDamping: 0.1
+  m_LinearDamping: 0
+  m_AngularDamping: 1
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: 64560883bd07114419171a9c34d7b02b, type: 2}
   m_IncludeLayers:
@@ -906,8 +931,8 @@ WheelJoint2D:
   m_Anchor: {x: 1.8600006, y: 0.3}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_Suspension:
-    m_DampingRatio: 0.7
-    m_Frequency: 25
+    m_DampingRatio: 1
+    m_Frequency: 30
     m_Angle: 90
   m_UseMotor: 0
   m_Motor:
@@ -931,8 +956,8 @@ WheelJoint2D:
   m_Anchor: {x: -1.8199997, y: 0.3}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_Suspension:
-    m_DampingRatio: 0.7
-    m_Frequency: 25
+    m_DampingRatio: 1
+    m_Frequency: 30
     m_Angle: 90
   m_UseMotor: 0
   m_Motor:

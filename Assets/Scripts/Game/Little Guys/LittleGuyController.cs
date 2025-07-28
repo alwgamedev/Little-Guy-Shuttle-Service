@@ -12,30 +12,52 @@ namespace LGShuttle.Game
         [SerializeField] RandomizableFloat panicRandomizer;
         [SerializeField] float randomPanicLerpRate;
         [SerializeField] RandomizableFloat repositionTime;
+        [SerializeField] RandomizableColor[] randomColors;
+        [SerializeField] RandomizableFloat randomScale;
 
         LittleGuyMover mover;
-
         Animator animator;
         float randomPanic;
 
         float _repositionTime;
         float repositionTimer;
 
+        public LittleGuyMover Mover
+        {
+            get
+            {
+                if (mover == null)
+                {
+                    mover = GetComponent<LittleGuyMover>();
+                }
+
+                return mover;
+            }
+        }
+
         private void Awake()
         {
-            mover = GetComponent<LittleGuyMover>();
+            if (mover == null)
+            {
+                mover = GetComponent<LittleGuyMover>();
+            }
             animator = GetComponent<Animator>();
         }
 
         private void Start()
         {
             ResetRepositionTimer();
+            RandomizeColor();
+            RandomizeScale();
         }
 
         private void Update()
         {
             AnimateMovement();
-            UpdateRepositionTimer();
+            if (!mover.BalanceBroken)
+            {
+                UpdateRepositionTimer();
+            }
         }
 
         private void LateUpdate()
@@ -52,6 +74,29 @@ namespace LGShuttle.Game
             {
                 mover.DefaultBehavior();
             }
+        }
+
+
+        //SETTINGS
+
+        public void SetSortingOrder(int order)
+        {
+            GetComponentInChildren<SortingLayerControl>().SortingOrder = 25 * order;
+        }
+
+        private void RandomizeColor()
+        {
+            var i = MiscTools.rng.Next(randomColors.Length);
+            var c = randomColors[i].Value;
+            foreach (var sr in GetComponentsInChildren<SpriteRenderer>())
+            {
+                sr.color *= c;
+            }
+        }
+
+        private void RandomizeScale()
+        {
+            transform.localScale = randomScale.Value * transform.localScale;
         }
 
 
