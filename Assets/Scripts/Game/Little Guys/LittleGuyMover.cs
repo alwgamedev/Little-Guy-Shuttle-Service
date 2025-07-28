@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using UnityEngine;
 
@@ -7,55 +8,52 @@ namespace LGShuttle.Game
     {
         [SerializeField] Transform frontFoot;
         [SerializeField] Transform backFoot;
-        [SerializeField] float balanceStrength;
-        [Range(0, 90)][SerializeField] float balanceBreakAngle = 60;
-        [SerializeField] float runThreshold;
-        //[SerializeField] float walkAcceleration;
-        //[SerializeField] float runAcceleration
-        [SerializeField] float walkSpeed;
-        [SerializeField] float runSpeed;
-        [SerializeField] float accelMultiplier;
-        //[SerializeField] float boardAccelBoostRate;
-        //[SerializeField] float boardAccelBoostMax;
-        [SerializeField] float accelerationDampTime;
-        [SerializeField] float destinationTolerance = 0.1f;
+        //[SerializeField] float balanceStrength;
+        //[Range(0, 90)][SerializeField] float balanceBreakAngle = 60;
+        //[SerializeField] float runThreshold;
+        //[SerializeField] float walkSpeed;
+        //[SerializeField] float runSpeed;
+        //[SerializeField] float accelMultiplier;
+        //[SerializeField] float accelerationDampTime;
+        //[SerializeField] float destinationTolerance = 0.1f;
+        [SerializeField] LittleGuyPhysicsSettings physicsSettings;
 
         float balanceBreakPoint;
-        //Vector2 frontFootRight;
-        //Vector2 backFootRight;
-
-        //int boardLayer;
         Vector2 boardAnchorPtLocalPos;
         float accelerationTimer;
         float moveImpetus;
 
+        float height;
+
         public Vector2 BoardAnchorPt => boardAnchorPtLocalPos + (Vector2)SkateboardMover.Board.transform.position;
-        public Rigidbody2D Rigidbody { get; private set; }
+        public Rigidbody2D Rigidbody { get; private set; }  
+        public Collider2D Collider { get; private set; }
         public float MoveImpetus => moveImpetus;
         public Vector2 RelativeVelocity => Rigidbody.linearVelocity - SkateboardMover.Board.linearVelocity;
         public float RelativeVelocityAlongBoard => Vector2.Dot(RelativeVelocity, SkateboardMover.Board.transform.right);
         public bool BalanceBroken { get; private set; }
-        public float RunThreshold => runThreshold;
+        public float RunThreshold => physicsSettings.runThreshold;
         public bool ShouldRun => Mathf.Abs(SkateboardMover.VelocityAlongBoard) > RunThreshold;
-        public float MoveSpeed => ShouldRun ?
-            runSpeed : walkSpeed;
-        public float WalkSpeed => walkSpeed;
-        public float RunSpeed => runSpeed;
+        public float MoveSpeed => ShouldRun ? RunSpeed : WalkSpeed;
+        public float WalkSpeed => physicsSettings.walkSpeed;
+        public float RunSpeed => physicsSettings.runSpeed;
+
+        //public event Action BalanceBroke;
 
         private void Awake()
         {
             Rigidbody = GetComponent<Rigidbody2D>();
-            balanceBreakPoint = Mathf.Cos(Mathf.Deg2Rad * (balanceBreakAngle + 90));
-            //frontFootRight = frontFoot.right;
-            //backFootRight = backFoot.right;
-            //boardLayer = LayerMask.GetMask("Skateboard");
+            Collider = GetComponent<Collider2D>();
+            height = Collider.bounds.extents.y * 2;
+            balanceBreakPoint = Mathf.Cos(Mathf.Deg2Rad * (physicsSettings.balanceBreakAngle + 90));
         }
 
         private void Start()
         {
-            var h = RaycastToBoard();
-            boardAnchorPtLocalPos = h.point - (Vector2)SkateboardMover.Board.transform.position;
+            UpdateAngularDamping();
+            SetAnchorPtToCurrentPosition();
         }
+
 
         //NAVIGATION
 
@@ -65,26 +63,71 @@ namespace LGShuttle.Game
             Debug.Log($"new anchor pt local pos: {boardAnchorPtLocalPos}");
         }
 
+        private void SetAnchorPtToCurrentPosition()
+        {
+            var h = RaycastToBoard();
+            if (h)
+            {
+                boardAnchorPtLocalPos = h.point - (Vector2)SkateboardMover.Board.transform.position;
+            }
+        }
+
+
+        //STATE
+
+        private bool IsGrounded(out Vector2 point)
+        {
+            var r = RaycastToBoard(physicsSettings.groundednessToleranceFactor * height);
+
+            if (r)
+            {
+                point = r.point;
+                return true;
+            }
+
+            point = default;
+            return false;
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            var lm = 1 << collision.gameObject.layer;
+            if (lm == GlobalGameTools.SkateboardLayer && BalanceBroken)
+            {
+                RegainBalance();
+            }
+            else if (lm == GlobalGameTools.GroundLayer)
+            {
+                Destroy(gameObject);
+            }
+        }
 
 
         //MOVEMENT
 
         public void DefaultBehavior()
         {
-            MoveTowardsBoardAnchorPoint();
-            Balance();
+            if (!IsGrounded(out _))
+            {
+                BreakBalance();
+            }
+            else
+            {
+                MoveTowardsBoardAnchorPoint();
+                Balance();
+            }
         }
 
         private void MoveTowardsBoardAnchorPoint()
         {
-            if (accelerationTimer < accelerationDampTime)
+            if (accelerationTimer < physicsSettings.accelerationDampTime)
             {
                 accelerationTimer += Time.deltaTime;
             }
 
             var d = MoveDirectionAlongBoard(BoardAnchorPt, out moveImpetus);
             var c = Mathf.Clamp(Mathf.Sqrt(moveImpetus), 0.1f, 1);
-            var a = accelMultiplier * accelerationTimer * c / accelerationDampTime;
+            var a = physicsSettings.accelMultiplier * accelerationTimer * c / physicsSettings.accelerationDampTime;
 
             if (!Move(MoveSpeed, a, d))
             {
@@ -96,19 +139,17 @@ namespace LGShuttle.Game
         {
             if (direction != Vector2.zero)
             {
-                FaceDirectionWithoutRotating(direction);
+                UpdateOrientation(direction);
                 var s = Vector2.Dot(RelativeVelocity, direction);
                 var f = (goalSpeed - s) * accelFactor * Rigidbody.mass * direction;
-                Debug.Log($"adding force {f}");
                 Rigidbody.AddForce(f);
                 return true;
             }
 
-            Debug.Log("no move");
             return false;
         }
 
-        private void FaceDirectionWithoutRotating(Vector2 direction)
+        private void UpdateOrientation(Vector2 direction)
         {
             var s = transform.localScale;
             var d = Vector2.Dot(direction, transform.right * Mathf.Sign(s.x));
@@ -126,7 +167,7 @@ namespace LGShuttle.Game
             var r = SkateboardMover.Board.transform.right;
             var dot = Vector2.Dot(d, r);
             var absDot = Mathf.Abs(dot);
-            if (absDot < destinationTolerance)
+            if (absDot < physicsSettings.destinationTolerance)
             {
                 moveImpetus = 0;
                 return Vector2.zero;
@@ -135,10 +176,10 @@ namespace LGShuttle.Game
             return Mathf.Sign(dot) * r;
         }
 
-        private RaycastHit2D RaycastToBoard()
+        private RaycastHit2D RaycastToBoard(float distance = Mathf.Infinity)
         {
-            return Physics2D.Raycast(transform.position, -SkateboardMover.Board.transform.up, 
-                SkateboardMover.BoardLayer);
+            return Physics2D.Raycast(Collider.bounds.center, -transform.up, distance,
+                GlobalGameTools.SkateboardLayer);
         }
 
 
@@ -149,11 +190,11 @@ namespace LGShuttle.Game
             var d = -Vector2.Dot(transform.right, SkateboardMover.Board.transform.up);
             if (d < balanceBreakPoint)
             {
-                BalanceBroken = true;
+                BreakBalance();
             }
             else
             {
-                Rigidbody.AddTorque(d * balanceStrength * Rigidbody.mass);
+                Rigidbody.AddTorque(d * physicsSettings.balanceStrength * Rigidbody.mass);
             }
         }
 
@@ -165,6 +206,24 @@ namespace LGShuttle.Game
             backFoot.right = 
                 Vector2.Dot(backFoot.transform.right, transform.right) * SkateboardMover.Board.transform.right
                 + Vector2.Dot(backFoot.transform.right, transform.up) * SkateboardMover.Board.transform.up;
+        }
+
+        private void BreakBalance()
+        {
+            BalanceBroken = true;
+            UpdateAngularDamping();
+        }
+
+        private void RegainBalance()
+        {
+            BalanceBroken = false;
+            UpdateAngularDamping();
+        }
+
+        private void UpdateAngularDamping()
+        {
+            Rigidbody.angularDamping = BalanceBroken ?
+                physicsSettings.fallenAngularDamping : physicsSettings.balancedAngularDamping;
         }
     }
 }

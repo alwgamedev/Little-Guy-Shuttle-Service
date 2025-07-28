@@ -5,12 +5,10 @@ namespace LGShuttle.Game
 {
     public class LittleGuyController : MonoBehaviour
     {
-        //[SerializeField] float moveAnimationScale = .5;
-        //[SerializeField] float moveAnimationDampTime = .15f;
+        [SerializeField] float moveAnimationDampTime;
         [SerializeField] float panicAnimationScale = 1;
         [SerializeField] float panicDampTime = .15f;
         [SerializeField] float panicFromMoveImpetusMax;
-        //[SerializeField] float panicBoardVelocityMin;
         [SerializeField] RandomizableFloat panicRandomizer;
         [SerializeField] float randomPanicLerpRate;
         [SerializeField] RandomizableFloat repositionTime;
@@ -54,9 +52,10 @@ namespace LGShuttle.Game
             {
                 mover.DefaultBehavior();
             }
-
-            //AnimateMovement();
         }
+
+
+        //POSITIONING
 
         private void ResetRepositionTimer()
         {
@@ -75,11 +74,19 @@ namespace LGShuttle.Game
         }
 
 
+        ////STATE CHANGE
+
+        //private void OnBalanceBroken()
+        //{
+
+        //}
+
+
         //ANIMATION
 
         private void AnimateMovement()
         {
-            animator.SetFloat("moveSpeed", ComputeAnimatorMoveSpeed());
+            animator.SetFloat("moveSpeed", ComputeAnimatorMoveSpeed(), moveAnimationDampTime, Time.deltaTime);
             animator.SetFloat("panic", ComputeAnimatorPanic(), panicDampTime, Time.deltaTime);
         }
 

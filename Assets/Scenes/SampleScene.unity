@@ -706,20 +706,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1664298842843999412, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
-      propertyPath: repositionTime.max
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 1664298842843999412, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
-      propertyPath: repositionTime.min
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 1664298842843999412, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
       propertyPath: moveAnimationDampTime
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2500722956170739175, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
-      propertyPath: m_AngularDamping
-      value: 18
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4740548018320934682, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
       propertyPath: m_Name
@@ -766,28 +754,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5868953112784160597, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
-      propertyPath: runSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5868953112784160597, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
-      propertyPath: accelMultiplier
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5868953112784160597, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
-      propertyPath: balanceStrength
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 5868953112784160597, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
-      propertyPath: accelerationDampTime
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 5868953112784160597, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
-      propertyPath: destinationTolerance
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6163258705638636367, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
-      propertyPath: m_Size.x
-      value: 0.45
+      propertyPath: physicsSettings.accelerationDampTime
+      value: 0.55
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

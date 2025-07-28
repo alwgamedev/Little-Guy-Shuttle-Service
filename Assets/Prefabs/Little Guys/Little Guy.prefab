@@ -73,7 +73,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDamping: 0
-  m_AngularDamping: 15
+  m_AngularDamping: 18
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: ea02a5ea88c1468438489f6922272348, type: 2}
   m_IncludeLayers:
@@ -121,7 +121,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0.55}
-  m_Size: {x: 0.4, y: 1.075}
+  m_Size: {x: 0.45, y: 1.075}
   m_Direction: 0
 --- !u!114 &5868953112784160597
 MonoBehaviour:
@@ -137,13 +137,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frontFoot: {fileID: 23857889852188722}
   backFoot: {fileID: 7542762909627272161}
-  balanceStrength: 75
-  balanceBreakAngle: 60
-  runThreshold: 1.5
-  walkSpeed: 2.5
-  runSpeed: 5
-  accelMultiplier: 50
-  destinationTolerance: 0.25
+  physicsSettings:
+    balanceStrength: 80
+    balanceBreakAngle: 60
+    balancedAngularDamping: 18
+    fallenAngularDamping: 2.5
+    runThreshold: 2.5
+    walkSpeed: 2.5
+    runSpeed: 5
+    accelMultiplier: 5
+    accelerationDampTime: 0.625
+    destinationTolerance: 0.5
+    groundednessToleranceFactor: 1.5
 --- !u!114 &1664298842843999412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,7 +161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa53e0ea44ac68d43aaa0d033639fa09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveAnimationDampTime: 0.1
   panicAnimationScale: 0.5
   panicDampTime: 0.1
   panicFromMoveImpetusMax: 1
@@ -164,11 +168,11 @@ MonoBehaviour:
     mode: 0
     min: -1
     max: 1
-  randomPanicLerpRate: 1
+  randomPanicLerpRate: 0.25
   repositionTime:
     mode: 0
-    min: 5
-    max: 20
+    min: 12
+    max: 30
 --- !u!1001 &7924577618380077852
 PrefabInstance:
   m_ObjectHideFlags: 0
