@@ -8,16 +8,25 @@ namespace LGShuttle.Game
         //[SerializeField] Rigidbody2D frontWheel;
         //[SerializeField] Rigidbody2D rearWheel;
         [SerializeField] Rigidbody2D board;
+        [SerializeField] Collider2D boardCollider;
         //[SerializeField] float torque = 75;
         [SerializeField] float acceleration;
+        [SerializeField] RandomizableVector2 randomBoardAnchorPosition;
 
         int input;
 
+        public static int BoardLayer { get; private set; }
         public static Rigidbody2D Board { get; private set; }
+        public static RandomizableVector2 RandomBoardAnchorPosition { get; private set; }
+        public static Vector2 RandomBoardAnchorLocalPosition 
+            => RandomBoardAnchorPosition.LerpValue - (Vector2)Board.transform.position;
+        public static float VelocityAlongBoard => Vector2.Dot(Board.linearVelocity, Board.transform.right);
 
         private void Awake()
         {
+            BoardLayer = LayerMask.GetMask("Skateboard");
             Board = board;
+            RandomBoardAnchorPosition = randomBoardAnchorPosition;
         }
 
         private void Update()

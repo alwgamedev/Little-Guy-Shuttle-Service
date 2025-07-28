@@ -28,6 +28,22 @@ namespace LGShuttle.Core
             }
         }
 
+        public Vector2 LerpValue
+        {
+            get
+            {
+                if (mode == RandomizableMode.Max)
+                {
+                    return Max;
+                }
+                else
+                {
+                    var t = MiscTools.RandomFloat(0, 1);
+                    return Vector2.Lerp(Min, Max, t);
+                }
+            }
+        }
+
         public Vector2 Midpoint => 0.5f * (Min + Max);
 
         public Vector2 Min =>

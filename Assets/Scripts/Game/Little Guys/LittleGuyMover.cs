@@ -1,3 +1,4 @@
+using System.Reflection;
 using UnityEngine;
 
 namespace LGShuttle.Game
@@ -8,28 +9,46 @@ namespace LGShuttle.Game
         [SerializeField] Transform backFoot;
         [SerializeField] float balanceStrength;
         [Range(0, 90)][SerializeField] float balanceBreakAngle = 60;
-        [SerializeField] float acceleration;
+        [SerializeField] float runThreshold;
+        //[SerializeField] float walkAcceleration;
+        //[SerializeField] float runAcceleration
+        [SerializeField] float walkSpeed;
+        [SerializeField] float runSpeed;
+        [SerializeField] float accelMultiplier;
+        //[SerializeField] float boardAccelBoostRate;
+        //[SerializeField] float boardAccelBoostMax;
+        [SerializeField] float accelerationDampTime;
         [SerializeField] float destinationTolerance = 0.1f;
 
-        Rigidbody2D rb;
-
         float balanceBreakPoint;
-        bool balanceBroken;
         //Vector2 frontFootRight;
         //Vector2 backFootRight;
 
-        int boardLayer;
+        //int boardLayer;
         Vector2 boardAnchorPtLocalPos;
+        float accelerationTimer;
+        float moveImpetus;
 
-        Vector2 BoardAnchorPt => boardAnchorPtLocalPos + (Vector2)SkateboardMover.Board.transform.position;
+        public Vector2 BoardAnchorPt => boardAnchorPtLocalPos + (Vector2)SkateboardMover.Board.transform.position;
+        public Rigidbody2D Rigidbody { get; private set; }
+        public float MoveImpetus => moveImpetus;
+        public Vector2 RelativeVelocity => Rigidbody.linearVelocity - SkateboardMover.Board.linearVelocity;
+        public float RelativeVelocityAlongBoard => Vector2.Dot(RelativeVelocity, SkateboardMover.Board.transform.right);
+        public bool BalanceBroken { get; private set; }
+        public float RunThreshold => runThreshold;
+        public bool ShouldRun => Mathf.Abs(SkateboardMover.VelocityAlongBoard) > RunThreshold;
+        public float MoveSpeed => ShouldRun ?
+            runSpeed : walkSpeed;
+        public float WalkSpeed => walkSpeed;
+        public float RunSpeed => runSpeed;
 
         private void Awake()
         {
-            rb = GetComponent<Rigidbody2D>();
+            Rigidbody = GetComponent<Rigidbody2D>();
             balanceBreakPoint = Mathf.Cos(Mathf.Deg2Rad * (balanceBreakAngle + 90));
             //frontFootRight = frontFoot.right;
             //backFootRight = backFoot.right;
-            boardLayer = LayerMask.GetMask("Skateboard");
+            //boardLayer = LayerMask.GetMask("Skateboard");
         }
 
         private void Start()
@@ -38,39 +57,54 @@ namespace LGShuttle.Game
             boardAnchorPtLocalPos = h.point - (Vector2)SkateboardMover.Board.transform.position;
         }
 
-        private void LateUpdate()
+        //NAVIGATION
+
+        public void ChooseNewAnchorPoint()
         {
-            if (!balanceBroken)
-            {
-                KeepFeetLevel();
-            }
+            boardAnchorPtLocalPos = SkateboardMover.RandomBoardAnchorLocalPosition;
+            Debug.Log($"new anchor pt local pos: {boardAnchorPtLocalPos}");
         }
 
-        private void FixedUpdate()
-        {
-            if (!balanceBroken)
-            {
-                MoveTowardsBoardAnchorPoint();
-                Balance();
-            }
-        }
+
 
         //MOVEMENT
 
-        public void MoveTowardsBoardAnchorPoint()
+        public void DefaultBehavior()
         {
-            Move(acceleration, MoveDirectionAlongBoard(BoardAnchorPt));
+            MoveTowardsBoardAnchorPoint();
+            Balance();
         }
 
-        private bool Move(float acceleration, Vector2 direction)
+        private void MoveTowardsBoardAnchorPoint()
+        {
+            if (accelerationTimer < accelerationDampTime)
+            {
+                accelerationTimer += Time.deltaTime;
+            }
+
+            var d = MoveDirectionAlongBoard(BoardAnchorPt, out moveImpetus);
+            var c = Mathf.Clamp(Mathf.Sqrt(moveImpetus), 0.1f, 1);
+            var a = accelMultiplier * accelerationTimer * c / accelerationDampTime;
+
+            if (!Move(MoveSpeed, a, d))
+            {
+                accelerationTimer = 0;
+            }
+        }
+
+        private bool Move(float goalSpeed, float accelFactor, Vector2 direction)
         {
             if (direction != Vector2.zero)
             {
                 FaceDirectionWithoutRotating(direction);
-                rb.AddForce(acceleration * rb.mass * direction);
+                var s = Vector2.Dot(RelativeVelocity, direction);
+                var f = (goalSpeed - s) * accelFactor * Rigidbody.mass * direction;
+                Debug.Log($"adding force {f}");
+                Rigidbody.AddForce(f);
                 return true;
             }
 
+            Debug.Log("no move");
             return false;
         }
 
@@ -86,21 +120,25 @@ namespace LGShuttle.Game
             }
         }
 
-        private Vector2 MoveDirectionAlongBoard(Vector2 targetPoint)
+        private Vector2 MoveDirectionAlongBoard(Vector2 targetPoint, out float moveImpetus)
         {
             var d = targetPoint - (Vector2)transform.position;
             var r = SkateboardMover.Board.transform.right;
             var dot = Vector2.Dot(d, r);
-            if (Mathf.Abs(dot) < destinationTolerance)
+            var absDot = Mathf.Abs(dot);
+            if (absDot < destinationTolerance)
             {
+                moveImpetus = 0;
                 return Vector2.zero;
             }
-            return Mathf.Sign(Vector2.Dot(d, r)) * r;
+            moveImpetus = absDot;
+            return Mathf.Sign(dot) * r;
         }
 
         private RaycastHit2D RaycastToBoard()
         {
-            return Physics2D.Raycast(transform.position, -SkateboardMover.Board.transform.up, boardLayer);
+            return Physics2D.Raycast(transform.position, -SkateboardMover.Board.transform.up, 
+                SkateboardMover.BoardLayer);
         }
 
 
@@ -111,11 +149,11 @@ namespace LGShuttle.Game
             var d = -Vector2.Dot(transform.right, SkateboardMover.Board.transform.up);
             if (d < balanceBreakPoint)
             {
-                balanceBroken = true;
+                BalanceBroken = true;
             }
             else
             {
-                rb.AddTorque(d * balanceStrength * rb.mass);
+                Rigidbody.AddTorque(d * balanceStrength * Rigidbody.mass);
             }
         }
 
