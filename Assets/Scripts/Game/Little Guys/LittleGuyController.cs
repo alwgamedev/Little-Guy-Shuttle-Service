@@ -92,7 +92,8 @@ namespace LGShuttle.Game
 
         private float ComputeAnimatorMoveSpeed()
         {
-            return Mathf.Abs(mover.RelativeVelocityAlongBoard) / mover.RunSpeed;
+            var f = Mathf.Abs(mover.RelativeVelocityAlongBoard) / mover.RunSpeed;
+            return Mathf.Clamp(f, 0, 1);
         }
 
         private float ComputeAnimatorPanic()
