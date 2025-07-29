@@ -645,7 +645,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -22.0477, y: -4.94, z: 0}
-  m_LocalScale: {x: 100, y: 3.516864, z: 1}
+  m_LocalScale: {x: 800, y: 3.516864, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -838,10 +838,6 @@ PrefabInstance:
     - target: {fileID: 4740548018320934682, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
       propertyPath: m_Name
       value: Little Guy
-      objectReference: {fileID: 0}
-    - target: {fileID: 4740548018320934682, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5405145560198378217, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
       propertyPath: m_LocalPosition.x

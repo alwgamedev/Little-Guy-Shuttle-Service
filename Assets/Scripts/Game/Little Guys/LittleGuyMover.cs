@@ -18,7 +18,7 @@ namespace LGShuttle.Game
         //[SerializeField] float destinationTolerance = 0.1f;
         [SerializeField] LittleGuyPhysicsSettings physicsSettings;
 
-        float balanceBreakPoint;
+        //float balanceBreakPoint;
         Vector2 boardAnchorPtLocalPos;
         float accelerationTimer;
         float moveImpetus;
@@ -46,7 +46,7 @@ namespace LGShuttle.Game
             Rigidbody = GetComponent<Rigidbody2D>();
             Collider = GetComponent<Collider2D>();
             Height = Collider.bounds.extents.y * 2;
-            balanceBreakPoint = Mathf.Cos(Mathf.Deg2Rad * (physicsSettings.balanceBreakAngle + 90));
+            //balanceBreakPoint = Mathf.Cos(Mathf.Deg2Rad * (physicsSettings.balanceBreakAngle + 90));
         }
 
         private void Start()
@@ -200,14 +200,15 @@ namespace LGShuttle.Game
         public void Balance()
         {
             var d = -Vector2.Dot(transform.right, SkateboardMover.Board.transform.up);
-            if (d < balanceBreakPoint)
-            {
-                BreakBalance();
-            }
-            else
-            {
-                Rigidbody.AddTorque(d * physicsSettings.balanceStrength * Rigidbody.mass);
-            }
+            Rigidbody.AddTorque(d * physicsSettings.balanceStrength * Rigidbody.mass);
+            //if (d < balanceBreakPoint)
+            //{
+            //    BreakBalance();
+            //}
+            //else
+            //{
+            //    Rigidbody.AddTorque(d * physicsSettings.balanceStrength * Rigidbody.mass);
+            //}
         }
 
         public void KeepFeetLevel()

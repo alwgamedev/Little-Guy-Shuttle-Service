@@ -139,16 +139,15 @@ MonoBehaviour:
   backFoot: {fileID: 7542762909627272161}
   physicsSettings:
     balanceStrength: 80
-    balanceBreakAngle: 60
     balancedAngularDamping: 18
     fallenAngularDamping: 2.5
     runThreshold: 2.5
     walkSpeed: 2.5
     runSpeed: 5.5
-    accelMultiplier: 6
+    accelMultiplier: 7.5
     randomAccelerationDampTime:
       mode: 0
-      min: 0.3
+      min: 0.1
       max: 0.55
     destinationTolerance: 0.75
     groundednessToleranceFactor: 1
@@ -177,19 +176,7 @@ MonoBehaviour:
     mode: 0
     min: 5
     max: 25
-  randomColors:
-  - mode: 0
-    min: {r: 0.9169811, g: 0.777469, b: 0.6418867, a: 1}
-    max: {r: 0.89433956, g: 0.6125382, b: 0.8180874, a: 1}
-  - mode: 0
-    min: {r: 0.89433956, g: 0.83064723, b: 0.5990388, a: 1}
-    max: {r: 0.5862605, g: 0.86415094, b: 0.5396867, a: 1}
-  - mode: 0
-    min: {r: 0.7073763, g: 0.93962264, b: 0.7985725, a: 1}
-    max: {r: 0.60360986, g: 0.8341399, b: 0.87169814, a: 1}
-  - mode: 0
-    min: {r: 0.52012104, g: 0.6799579, b: 0.86415094, a: 1}
-    max: {r: 0.88585734, g: 0.74390167, b: 0.93207544, a: 1}
+  colorSaturation: 0.25
   randomScale:
     mode: 0
     min: 0.75

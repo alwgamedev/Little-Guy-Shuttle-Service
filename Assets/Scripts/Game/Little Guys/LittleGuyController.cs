@@ -12,7 +12,8 @@ namespace LGShuttle.Game
         [SerializeField] RandomizableFloat panicRandomizer;
         [SerializeField] float randomPanicLerpRate;
         [SerializeField] RandomizableFloat repositionTime;
-        [SerializeField] RandomizableColor[] randomColors;
+        //[SerializeField] RandomizableColor[] randomColors;
+        [SerializeField] float colorSaturation;
         [SerializeField] RandomizableFloat randomScale;
 
         LittleGuyMover mover;
@@ -86,8 +87,7 @@ namespace LGShuttle.Game
 
         private void RandomizeColor()
         {
-            var i = MiscTools.rng.Next(randomColors.Length);
-            var c = randomColors[i].Value;
+            var c = RandomizableColor.RandomColor(colorSaturation, 1);
             foreach (var sr in GetComponentsInChildren<SpriteRenderer>())
             {
                 sr.color *= c;

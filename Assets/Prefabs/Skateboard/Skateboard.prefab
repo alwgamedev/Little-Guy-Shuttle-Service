@@ -406,8 +406,9 @@ MonoBehaviour:
   board: {fileID: 2423346466729361443}
   frontWheel: {fileID: 1232362380311639821}
   backWheel: {fileID: 8044994112398815668}
-  acceleration: 15
+  acceleration: 1
   torque: 10
+  moveSpeed: 25
   jumpCooldown: 0.25
   jumpImpulseForce: 7.5
   jumpHoldForce: 5
@@ -899,7 +900,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 50
-  m_LinearDamping: 0
+  m_LinearDamping: 0.125
   m_AngularDamping: 1
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: 64560883bd07114419171a9c34d7b02b, type: 2}

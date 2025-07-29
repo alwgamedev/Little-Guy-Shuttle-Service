@@ -10,6 +10,7 @@ namespace LGShuttle.Game
         [SerializeField] Collider2D backWheel;
         [SerializeField] float acceleration;
         [SerializeField] float torque;
+        [SerializeField] float moveSpeed;
         [SerializeField] float jumpCooldown;
         [SerializeField] float jumpImpulseForce;
         [SerializeField] float jumpHoldForce;
@@ -70,7 +71,7 @@ namespace LGShuttle.Game
         {
             if (moveInput != 0)
             {
-                Accelerate(moveInput, acceleration);
+                Accelerate(moveInput, moveSpeed, acceleration);
             }
 
             if (rotateInput != 0)
@@ -95,9 +96,13 @@ namespace LGShuttle.Game
             }
         }
 
-        private void Accelerate(int direction, float acceleration)
+        private void Accelerate(int direction, float goalSpeed, float acceleration)
         {
-            board.AddForce(direction * acceleration * board.mass * transform.right);
+            //board.AddForce(direction * acceleration * board.mass * transform.right);
+
+            var s = Vector2.Dot(Board.linearVelocity, direction * Board.transform.right);
+            var f = (goalSpeed - s) * acceleration * Board.mass * direction * Board.transform.right;
+            Board.AddForce(f);
         }
 
         private void Rotate(int direction, float torque)
