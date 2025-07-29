@@ -71,7 +71,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.1
   m_LinearDamping: 0
   m_AngularDamping: 18
   m_GravityScale: 1
@@ -145,13 +145,13 @@ MonoBehaviour:
     runThreshold: 2.5
     walkSpeed: 2.5
     runSpeed: 5.5
-    accelMultiplier: 5.5
+    accelMultiplier: 6
     randomAccelerationDampTime:
       mode: 0
       min: 0.3
       max: 0.55
-    destinationTolerance: 0.5
-    groundednessToleranceFactor: 1.5
+    destinationTolerance: 0.75
+    groundednessToleranceFactor: 1
 --- !u!114 &1664298842843999412
 MonoBehaviour:
   m_ObjectHideFlags: 0

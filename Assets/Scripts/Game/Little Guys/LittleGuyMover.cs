@@ -23,7 +23,7 @@ namespace LGShuttle.Game
         float accelerationTimer;
         float moveImpetus;
         float accelerationDampTime;
-        bool repositioning;
+        //bool repositioning;
 
         public Vector2 BoardAnchorPt => boardAnchorPtLocalPos + (Vector2)SkateboardMover.Board.transform.position;
         public Rigidbody2D Rigidbody { get; private set; }  
@@ -34,7 +34,7 @@ namespace LGShuttle.Game
         public float RelativeVelocityAlongBoard => Vector2.Dot(RelativeVelocity, SkateboardMover.Board.transform.right);
         public bool BalanceBroken { get; private set; }
         public float RunThreshold => physicsSettings.runThreshold;
-        public bool ShouldRun => !repositioning && Mathf.Abs(SkateboardMover.VelocityAlongBoard) > RunThreshold;
+        public bool ShouldRun => /*!repositioning &&*/ Mathf.Abs(SkateboardMover.VelocityAlongBoard) > RunThreshold;
         public float MoveSpeed => ShouldRun ? RunSpeed : WalkSpeed;
         public float WalkSpeed => physicsSettings.walkSpeed;
         public float RunSpeed => physicsSettings.runSpeed;
@@ -62,7 +62,7 @@ namespace LGShuttle.Game
         public void ChooseNewAnchorPoint()
         {
             boardAnchorPtLocalPos = SkateboardMover.RandomBoardAnchorLocalPosition;
-            repositioning = true;
+            //repositioning = true;
         }
 
         private void SetAnchorPtToCurrentPosition()
@@ -111,7 +111,10 @@ namespace LGShuttle.Game
         {
             if (!IsGrounded(out _))
             {
-                BreakBalance();
+                if (!BalanceBroken)
+                {
+                    BreakBalance();
+                }
             }
             else
             {
@@ -133,7 +136,7 @@ namespace LGShuttle.Game
 
             if (!Move(MoveSpeed, a, d))
             {
-                repositioning = false;
+                //repositioning = false;
                 ResetAccelerationTimer();
             }
         }

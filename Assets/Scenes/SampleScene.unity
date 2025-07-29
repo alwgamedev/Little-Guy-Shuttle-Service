@@ -822,18 +822,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skateboard
       objectReference: {fileID: 0}
-    - target: {fileID: 4931290026107218523, guid: 2b7622d782c1f0045ba6e56f284cfa81, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5383399818355129279, guid: 2b7622d782c1f0045ba6e56f284cfa81, type: 3}
-      propertyPath: spawnHeightFactor.max
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5623700327287994689, guid: 2b7622d782c1f0045ba6e56f284cfa81, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1.5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
