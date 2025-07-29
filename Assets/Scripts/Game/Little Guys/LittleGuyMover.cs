@@ -18,21 +18,21 @@ namespace LGShuttle.Game
         //[SerializeField] float destinationTolerance = 0.1f;
         [SerializeField] LittleGuyPhysicsSettings physicsSettings;
 
-        //float balanceBreakPoint;
         Vector2 boardAnchorPtLocalPos;
         float accelerationTimer;
         float moveImpetus;
         float accelerationDampTime;
-        //bool repositioning;
 
         public Vector2 BoardAnchorPt => boardAnchorPtLocalPos + (Vector2)SkateboardMover.Board.transform.position;
         public Rigidbody2D Rigidbody { get; private set; }  
         public Collider2D Collider { get; private set; }
         public float Height { get; private set; }
         public float MoveImpetus => moveImpetus;
-        public Vector2 RelativeVelocity => Rigidbody.linearVelocity - SkateboardMover.Board.linearVelocity;
+        public Vector2 RelativeVelocity => BalanceBroken ? Rigidbody.linearVelocity
+            : Rigidbody.linearVelocity - SkateboardMover.Board.linearVelocity;
         public float RelativeVelocityAlongBoard => Vector2.Dot(RelativeVelocity, SkateboardMover.Board.transform.right);
         public bool BalanceBroken { get; private set; }
+        public bool Dead { get; private set; }
         public float RunThreshold => physicsSettings.runThreshold;
         public bool ShouldRun => /*!repositioning &&*/ Mathf.Abs(SkateboardMover.VelocityAlongBoard) > RunThreshold;
         public float MoveSpeed => ShouldRun ? RunSpeed : WalkSpeed;
@@ -40,6 +40,8 @@ namespace LGShuttle.Game
         public float RunSpeed => physicsSettings.runSpeed;
 
         //public event Action BalanceBroke;
+
+        public event Action<LittleGuyMover> Death;
 
         private void Awake()
         {
@@ -93,6 +95,8 @@ namespace LGShuttle.Game
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
+            if (Dead || !gameObject) return;
+
             var lm = 1 << collision.gameObject.layer;
             if (lm == GlobalGameTools.SkateboardLayer && BalanceBroken)
             {
@@ -100,8 +104,15 @@ namespace LGShuttle.Game
             }
             else if (lm == GlobalGameTools.GroundLayer)
             {
+                Dead = true;
+                Death?.Invoke(this);
                 Destroy(gameObject);
             }
+        }
+
+        private void OnCollisionStay2D(Collision2D collision)
+        {
+            OnCollisionEnter2D(collision);
         }
 
 
@@ -190,7 +201,7 @@ namespace LGShuttle.Game
 
         private RaycastHit2D RaycastToBoard(float distance = Mathf.Infinity)
         {
-            return Physics2D.Raycast(Collider.bounds.center, -transform.up, distance,
+            return Physics2D.Raycast(Collider.bounds.center, -SkateboardMover.Board.transform.up, distance,
                 GlobalGameTools.SkateboardLayer);
         }
 
@@ -200,6 +211,7 @@ namespace LGShuttle.Game
         public void Balance()
         {
             var d = -Vector2.Dot(transform.right, SkateboardMover.Board.transform.up);
+            d *= Mathf.Sqrt(Mathf.Abs(d));//I like the feel this gives it (and * Abs(d) was too much at extreme angles)
             Rigidbody.AddTorque(d * physicsSettings.balanceStrength * Rigidbody.mass);
             //if (d < balanceBreakPoint)
             //{
@@ -237,6 +249,11 @@ namespace LGShuttle.Game
         {
             Rigidbody.angularDamping = BalanceBroken ?
                 physicsSettings.fallenAngularDamping : physicsSettings.balancedAngularDamping;
+        }
+
+        private void OnDestroy()
+        {
+            Death = null;
         }
     }
 }

@@ -28,11 +28,11 @@ namespace LGShuttle.Core
 
         public Color Max => max;
 
-        public static Color RandomColor(float minSaturation, float alpha)
+        public static Color RandomColor(float colorSpread, float alpha)
         {
-            var x = MiscTools.RandomFloat(0, 1 - minSaturation);
-            var y = MiscTools.RandomFloat(x, 1);
-            var z = MiscTools.RandomFloat(Mathf.Max(y, x + minSaturation), 1);
+            var x = MiscTools.RandomFloat(0, 1 - 2 * colorSpread);
+            var y = MiscTools.RandomFloat(x + colorSpread, 1 - colorSpread);
+            var z = MiscTools.RandomFloat(y + colorSpread, 1);
 
             List<int> indices = new() { 0, 1, 2 };
             float[] rgb = new float[] { 0, 0, 0 };
