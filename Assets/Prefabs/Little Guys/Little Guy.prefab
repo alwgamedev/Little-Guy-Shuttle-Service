@@ -145,12 +145,12 @@ MonoBehaviour:
     runThreshold: 2.5
     walkSpeed: 2.5
     runSpeed: 5.5
-    accelMultiplier: 10
+    accelMultiplier: 6
     randomAccelerationDampTime:
       mode: 0
-      min: 0
+      min: 0.25
       max: 0.6
-    destinationTolerance: 0.75
+    destinationTolerance: 0.8
     groundednessToleranceFactor: 2
 --- !u!114 &1664298842843999412
 MonoBehaviour:
@@ -164,15 +164,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa53e0ea44ac68d43aaa0d033639fa09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveAnimationDampTime: 0.1
-  panicAnimationScale: 0.5
-  panicDampTime: 0.1
-  panicFromMoveImpetusMax: 0.75
+  moveAnimationDampTime: 0.25
+  panicAnimationScale: 0.4
+  panicDampTime: 0.25
+  panicFromMoveImpetusMax: 0.5
   panicRandomizer:
     mode: 0
     min: -0.9
-    max: 1.3
-  randomPanicLerpRate: 0.25
+    max: 1.75
+  randomPanicLerpRate: 0.1
   repositionTime:
     mode: 0
     min: 5

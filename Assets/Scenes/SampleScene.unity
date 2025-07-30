@@ -880,13 +880,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1664298842843999412, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
+      propertyPath: panicAnimationScale
+      value: 0.55
+      objectReference: {fileID: 0}
     - target: {fileID: 4740548018320934682, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
       propertyPath: m_Name
       value: Little Guy
-      objectReference: {fileID: 0}
-    - target: {fileID: 4740548018320934682, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5405145560198378217, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
       propertyPath: m_LocalPosition.x

@@ -141,7 +141,7 @@ namespace LGShuttle.Game
 
         private float ComputeAnimatorMoveSpeed()
         {
-            var f = Mathf.Abs(mover.RelativeVelocity.magnitude) / mover.RunSpeed;
+            var f = Mathf.Abs(mover.RelativeVelocity.magnitude + MoveImpetusContribution()) / mover.RunSpeed;
             return Mathf.Clamp(f, 0, 1);
         }
 
@@ -152,10 +152,13 @@ namespace LGShuttle.Game
                 return 0;
             }
 
-            var i = mover.MoveImpetus * panicAnimationScale;
-            i = Mathf.Min(i, panicFromMoveImpetusMax);
             randomPanic = Mathf.Lerp(randomPanic, panicRandomizer.Value, randomPanicLerpRate * Time.deltaTime);
-            return i + randomPanic;
+            return randomPanic + MoveImpetusContribution();
+        }
+
+        private float MoveImpetusContribution()
+        {
+            return Mathf.Min(mover.MoveImpetus * panicAnimationScale, panicFromMoveImpetusMax);
         }
     }
 }
