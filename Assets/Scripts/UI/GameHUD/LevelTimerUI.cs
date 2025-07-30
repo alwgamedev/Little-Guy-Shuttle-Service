@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using LGShuttle.Game;
+using TMPro;
 using UnityEngine;
 
 namespace LGShuttle.UI
@@ -7,12 +8,9 @@ namespace LGShuttle.UI
     {
         [SerializeField] TextMeshProUGUI tmp;
 
-        public void UpdateUI(float timeRemaining)
+        public void UpdateUI(ILevelTimer lt)
         {
-            var mins = (int)(timeRemaining / 60);
-            var secs = (int)timeRemaining % 60;
-            string s = secs < 10 ? '0' + secs.ToString() : secs.ToString();
-            tmp.text = $"{mins}:{s}";
+            tmp.text = lt.FormattedTimeRemaining();
         }
     }
 }

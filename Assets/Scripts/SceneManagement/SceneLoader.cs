@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LGShuttle.SceneManagement
 {
-    public static class SceneTransitionManager
+    public static class SceneLoader
     {
         public static float sceneFadeTime;
         public static HidableUI sceneFader;

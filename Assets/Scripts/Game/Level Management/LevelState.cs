@@ -1,8 +1,9 @@
-﻿namespace LGShuttle.Game
+﻿using static Unity.Burst.Intrinsics.X86.Avx;
+
+namespace LGShuttle.Game
 {
     public struct LevelState
     {
-        //public GameState gameState;
         public bool gameRunning;
         public int spawned;
         public int remaining;

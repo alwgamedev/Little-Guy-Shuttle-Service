@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveAnimationDampTime: 0.25
-  panicAnimationScale: 0.4
+  panicAnimationScale: 0.55
   panicDampTime: 0.25
   panicFromMoveImpetusMax: 0.5
   panicRandomizer:

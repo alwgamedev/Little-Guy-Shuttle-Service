@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace LGShuttle.Game
 {
-    public class LevelTimer : MonoBehaviour
+    public class LevelTimer : MonoBehaviour, ILevelTimer
     {
         float timeRemaining;
 
@@ -15,7 +15,7 @@ namespace LGShuttle.Game
             private set
             {
                 timeRemaining = value;
-                UICanvas.Instance.GameHUD.UpdateTimer(TimeRemaining);
+                UICanvas.Instance.GameHUD.UpdateTimer(this);
             }
         }
         public bool Running { get; private set; }   
@@ -32,6 +32,14 @@ namespace LGShuttle.Game
                     TimeOut();
                 }
             }
+        }
+
+        public string FormattedTimeRemaining()
+        {
+            var mins = (int)(timeRemaining / 60);
+            var secs = (int)timeRemaining % 60;
+            string s = secs < 10 ? '0' + secs.ToString() : secs.ToString();
+            return $"{mins}:{s}";
         }
 
         public void SetTimer(float timeLimit)

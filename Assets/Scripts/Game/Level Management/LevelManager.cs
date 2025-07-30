@@ -28,10 +28,11 @@ namespace LGShuttle.Game
 
         LittleGuySpawner spawner;
         LittleGuyController[] spawned;
+        LevelTimer timer;
         LevelParams levelParams;
         LevelState levelState;
 
-        public LevelTimer Timer { get; private set; }
+        public ILevelTimer Timer => timer;
         public LevelParams LevelParams => levelParams;
         public LevelState LevelState => levelState;
 
@@ -51,15 +52,16 @@ namespace LGShuttle.Game
         private void Awake()
         {
             spawner = GetComponent<LittleGuySpawner>();
-            Timer = GetComponent<LevelTimer>();
+            timer = GetComponent<LevelTimer>();
             //DontDestroyOnLoad(gameObject);
         }
 
         private void OnEnable()
         {
-            Timer.TimedOut += TimeOutHandler;
-            GameHUD.RestartRequested += HandleRestartRequest;
+            timer.TimedOut += TimeOutHandler;
+            GameHUD.RequestRestart += HandleRestartRequest;
             LevelParamsMessenger.SendLevelParams += ReceiveLevelParams;
+            FinishLine.FinishLineTriggered += OnFinishLineCrossed;
         }
 
         //private void Start()
@@ -70,14 +72,14 @@ namespace LGShuttle.Game
 
         private void ReceiveLevelParams(LevelParams levelParams)
         {
-            PrepareLevel(testLevelParams);
+            PrepareLevel(levelParams);
             StartGame();
         }
 
         public void PrepareLevel(LevelParams levelParams)
         {
             this.levelParams = levelParams;
-            Timer.SetTimer(levelParams.timeLimit);
+            timer.SetTimer(levelParams.timeLimit);
             spawned = spawner.Spawn(this.levelParams.lgToSpawn);
             levelState.spawned = spawned.Length;
             levelState.remaining = spawned.Length;
@@ -87,37 +89,29 @@ namespace LGShuttle.Game
 
         public void StartGame()
         {
-            //should never happen, but just in case so we don't miss a bug
-            if (levelState.gameRunning)
-            {
-                throw new Exception("Tried to start game, but the game is already running.");
-            }
-
             levelState.gameRunning = true;
-            Timer.StartTimer();
+            timer.StartTimer();
             GameStarted?.Invoke(this);
         }
 
         public async UniTask EndGame(bool restart = false)
         {
-            //should never happen, but just in case so we don't miss a bug
-            if (!levelState.gameRunning)
-            {
-                throw new Exception("Tried to end game, but the game is not running.");
-            }
-
-            Timer.StopTimer();
+            timer.StopTimer();
             levelState.gameRunning = false;
             GameEnded?.Invoke(this);
 
             if (restart)
             {
                 await MiscTools.DelayGameTime(1, GlobalGameTools.Instance.CTS.Token);
-                await SceneTransitionManager.ReloadScene();
+                await SceneLoader.ReloadScene();
             }
         }
 
-        
+        //public async void LoadNextLevel()
+        //{
+        //    Debug.Log("load next level here!");
+        //    await SceneLoader.ReloadScene();
+        //}
 
         //public void FailLevel()
         //{
@@ -131,8 +125,6 @@ namespace LGShuttle.Game
         {
             if (levelState.gameRunning)
             {
-                Debug.Log("time's up!");
-                //FailLevel();
                 await EndGame(true);
             }
         }
@@ -142,6 +134,14 @@ namespace LGShuttle.Game
             if (levelState.gameRunning)
             { 
                 await EndGame(true);
+            }
+        }
+
+        private async void OnFinishLineCrossed()
+        {
+            if (levelState.gameRunning)
+            {
+                await EndGame();
             }
         }
 
@@ -191,9 +191,10 @@ namespace LGShuttle.Game
 
         private void OnDisable()
         {
-            Timer.TimedOut -= TimeOutHandler;
-            GameHUD.RestartRequested -= HandleRestartRequest;
+            timer.TimedOut -= TimeOutHandler;
+            GameHUD.RequestRestart -= HandleRestartRequest;
             LevelParamsMessenger.SendLevelParams -= ReceiveLevelParams;
+            FinishLine.FinishLineTriggered -= OnFinishLineCrossed;
         }
 
         private void OnDestroy()

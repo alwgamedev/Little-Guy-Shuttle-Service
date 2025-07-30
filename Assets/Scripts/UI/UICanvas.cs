@@ -17,8 +17,8 @@ namespace LGShuttle.UI
         {
             Instance = this;
             GameHUD = GetComponentInChildren<GameHUD>();
-            SceneTransitionManager.sceneFader = sceneFader;
-            SceneTransitionManager.sceneFadeTime = sceneFadeTime;
+            SceneLoader.sceneFader = sceneFader;
+            SceneLoader.sceneFadeTime = sceneFadeTime;
         }
 
         private void OnEnable()
@@ -39,7 +39,7 @@ namespace LGShuttle.UI
         private void OnDestroy()
         {
             Instance = null;
-            SceneTransitionManager.sceneFader = null;
+            SceneLoader.sceneFader = null;
         }
     }
 }

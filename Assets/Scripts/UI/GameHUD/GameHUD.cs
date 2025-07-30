@@ -1,8 +1,8 @@
 using Cysharp.Threading.Tasks;
 using LGShuttle.Core;
 using LGShuttle.Game;
+using LGShuttle.SceneManagement;
 using System;
-using System.Threading;
 using UnityEngine;
 
 namespace LGShuttle.UI
@@ -15,14 +15,17 @@ namespace LGShuttle.UI
         LevelTimerUI timer;
         SurvivalCounter survivalCounter;
         RestartUI restartUI;
+        LevelCompleteUI levelCompleteUI;
 
-        public static event Action RestartRequested;
+        public static event Action RequestRestart;
+        //public static event Action RequestNextLevel;
 
         private void Awake()
         {
             timer = GetComponentInChildren<LevelTimerUI>();
             survivalCounter = GetComponentInChildren<SurvivalCounter>();
             restartUI = GetComponentInChildren<RestartUI>();
+            levelCompleteUI = GetComponentInChildren<LevelCompleteUI>();
         }
 
         private void OnEnable()
@@ -32,17 +35,18 @@ namespace LGShuttle.UI
             LevelManager.LGDeath += OnLGDeath;
             LevelManager.GameEnded += OnGameEnded;
             restartUI.ConfirmedRestart += SendRestartRequest;
+            levelCompleteUI.ContinueButton.onClick.AddListener(ContinueToNextLevel);
         }
 
         public void UpdateUI(ILevelManager levelManager)
         {
-            UpdateTimer(levelManager.Timer.TimeRemaining);
+            UpdateTimer(levelManager.Timer);
             UpdateSurvivalCounter(levelManager.LevelParams, levelManager.LevelState);
         }
 
-        public void UpdateTimer(float timeRemaining)
+        public void UpdateTimer(ILevelTimer lt)
         {
-            timer.UpdateUI(timeRemaining); 
+            timer.UpdateUI(lt); 
         }
 
         public void UpdateSurvivalCounter(LevelParams p, LevelState s, bool animateDeath = false)
@@ -70,7 +74,6 @@ namespace LGShuttle.UI
         private async void OnGameEnded(ILevelManager levelManager)
         {
             restartUI.OnGameEnded(levelManager);
-            //interpret result of game and display appropriate ui
             if (levelManager.LevelFailed)
             {
                 var a = LevelFailedAnimation();
@@ -79,13 +82,23 @@ namespace LGShuttle.UI
             }
             else
             {
+                levelCompleteUI.UpdateUI(levelManager);
+                levelCompleteUI.Show();
                 await FadeOutPrimaryUI();
             }
         }
 
         private void SendRestartRequest()
         {
-            RestartRequested?.Invoke();
+            RequestRestart?.Invoke();
+        }
+
+        private async void ContinueToNextLevel()
+        {
+            //RequestNextLevel?.Invoke();
+            Debug.Log("load next level here!");
+            levelCompleteUI.Hide();
+            await SceneLoader.ReloadScene();
         }
 
         private async UniTask FadeInPrimaryUI()
@@ -118,6 +131,7 @@ namespace LGShuttle.UI
             LevelManager.LGDeath -= OnLGDeath;
             LevelManager.GameEnded -= OnGameEnded;
             restartUI.ConfirmedRestart -= SendRestartRequest;
+            levelCompleteUI.ContinueButton.onClick.RemoveListener(ContinueToNextLevel);
         }
     }
 }
