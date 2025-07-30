@@ -1,4 +1,6 @@
-﻿using LGShuttle.Game;
+﻿using Cysharp.Threading.Tasks;
+using LGShuttle.Game;
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -12,6 +14,8 @@ namespace LGShuttle.UI
         float confirmTimer;
         bool confirming;
         bool gameRunning;
+
+        public event Action ConfirmedRestart;
 
         private void Start()
         {
@@ -51,7 +55,10 @@ namespace LGShuttle.UI
         public void OnGameEnded(ILevelManager lm)
         {
             gameRunning = false;
-            DisplayDefaultMessage();
+            if (confirming)
+            {
+                CancelConfirm();
+            }
         }
 
         private void BeginConfirm()
@@ -69,7 +76,7 @@ namespace LGShuttle.UI
         private void RestartConfirmed()
         {
             confirming = false;
-            Debug.Log("restart!");
+            ConfirmedRestart?.Invoke();
         }
 
         private void DisplayConfirmMessage()
@@ -80,6 +87,11 @@ namespace LGShuttle.UI
         private void DisplayDefaultMessage()
         {
             tmp.text = "HOLD R TO RESTART";
+        }
+
+        private void OnDestroy()
+        {
+            ConfirmedRestart = null;
         }
     }
 }

@@ -1,0 +1,50 @@
+using Cysharp.Threading.Tasks;
+using LGShuttle.UI;
+using UnityEngine.SceneManagement;
+using LGShuttle.Game;
+using System.Threading.Tasks;
+
+namespace LGShuttle.SceneManagement
+{
+    public static class SceneTransitionManager
+    {
+        public static float sceneFadeTime;
+        public static HidableUI sceneFader;
+
+        public static async UniTask ReloadScene()
+        {
+            await LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        public static async UniTask LoadScene(int buildIndex)
+        {
+            var ao = SceneManager.LoadSceneAsync(buildIndex);
+            ao.allowSceneActivation = false;
+
+            var s = sceneFader.FadeShow(sceneFadeTime, GlobalGameTools.Instance.CTS.Token);
+
+            async UniTask t()
+            {
+                while (!ao.isDone)
+                {
+                    if (GlobalGameTools.Instance.CTS.IsCancellationRequested)
+                    {
+                        throw new TaskCanceledException();
+                    }
+                    if (ao.progress >= 0.9f)
+                    {
+                        return;
+                    }
+
+                    await UniTask.Yield();
+                }
+            }
+
+            await UniTask.WhenAll(s, t());
+
+            ao.allowSceneActivation = true;
+
+            await sceneFader.FadeHide(sceneFadeTime, GlobalGameTools.Instance.CTS.Token);
+        }
+    }
+}

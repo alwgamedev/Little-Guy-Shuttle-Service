@@ -15,7 +15,7 @@ namespace LGShuttle.Game
             private set
             {
                 timeRemaining = value;
-                GameHUD.Instance.UpdateTimer(TimeRemaining);
+                UICanvas.Instance.GameHUD.UpdateTimer(TimeRemaining);
             }
         }
         public bool Running { get; private set; }   

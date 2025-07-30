@@ -86,11 +86,11 @@ namespace LGShuttle.Game
             if (Dead || !gameObject) return;
 
             var layer = 1 << collision.gameObject.layer;
-            if (BalanceBroken && layer == GlobalGameTools.SkateboardLayer)
+            if (BalanceBroken && layer == GlobalGameTools.Instance.SkateboardLayer)
             {
                 RegainBalance();
             }
-            else if (layer == GlobalGameTools.GroundLayer)
+            else if (layer == GlobalGameTools.Instance.GroundLayer)
             {
                 Dead = true;
                 Death?.Invoke(this);
@@ -189,7 +189,7 @@ namespace LGShuttle.Game
         private RaycastHit2D RaycastToBoard(float distance = Mathf.Infinity)
         {
             return Physics2D.Raycast(Collider.bounds.center, -SkateboardMover.Board.transform.up, distance,
-                GlobalGameTools.SkateboardLayer);
+                GlobalGameTools.Instance.SkateboardLayer);
         }
 
 

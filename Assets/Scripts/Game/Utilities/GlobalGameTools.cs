@@ -1,14 +1,18 @@
-﻿using UnityEngine;
+﻿using System.Threading;
+using UnityEngine;
 
 namespace LGShuttle.Game
 {
-    public static class GlobalGameTools
+    public class GlobalGameTools : MonoBehaviour
     {
-        static int? littleGuyLayer;
-        static int? skateboardLayer;
-        static int? groundLayer;
+        int? littleGuyLayer;
+        int? skateboardLayer;
+        int? groundLayer;
 
-        public static int LittleGuyLayer
+        public static GlobalGameTools Instance { get; private set; }
+
+        public CancellationTokenSource CTS { get; private set; }
+        public int LittleGuyLayer
         {
             get
             {
@@ -20,7 +24,7 @@ namespace LGShuttle.Game
                 return littleGuyLayer.Value;
             }
         }
-        public static int SkateboardLayer
+        public int SkateboardLayer
         {
             get
             {
@@ -32,7 +36,7 @@ namespace LGShuttle.Game
                 return skateboardLayer.Value;
             }
         }
-        public static int GroundLayer
+        public int GroundLayer
         {
             get
             {
@@ -43,6 +47,19 @@ namespace LGShuttle.Game
 
                 return groundLayer.Value;
             }
+        }
+
+        private void Awake()
+        {
+            CTS = new();
+            Instance = this;
+        }
+
+        private void OnDestroy()
+        {
+            CTS.Cancel();
+            CTS.Dispose();
+            Instance = null;
         }
     }
 }

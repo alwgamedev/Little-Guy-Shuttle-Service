@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using LGShuttle.Core;
+using LGShuttle.UI;
+using LGShuttle.SceneManagement;
+using System;
 using UnityEngine;
 
 namespace LGShuttle.Game
@@ -48,14 +52,23 @@ namespace LGShuttle.Game
         {
             spawner = GetComponent<LittleGuySpawner>();
             Timer = GetComponent<LevelTimer>();
+            //DontDestroyOnLoad(gameObject);
         }
 
         private void OnEnable()
         {
             Timer.TimedOut += TimeOutHandler;
+            GameHUD.RestartRequested += HandleRestartRequest;
+            LevelParamsMessenger.SendLevelParams += ReceiveLevelParams;
         }
 
-        private void Start()
+        //private void Start()
+        //{
+        //    //PrepareLevel(testLevelParams);
+        //    StartGame();
+        //}
+
+        private void ReceiveLevelParams(LevelParams levelParams)
         {
             PrepareLevel(testLevelParams);
             StartGame();
@@ -85,7 +98,7 @@ namespace LGShuttle.Game
             GameStarted?.Invoke(this);
         }
 
-        public void EndGame()
+        public async UniTask EndGame(bool restart = false)
         {
             //should never happen, but just in case so we don't miss a bug
             if (!levelState.gameRunning)
@@ -96,26 +109,43 @@ namespace LGShuttle.Game
             Timer.StopTimer();
             levelState.gameRunning = false;
             GameEnded?.Invoke(this);
+
+            if (restart)
+            {
+                await MiscTools.DelayGameTime(1, GlobalGameTools.Instance.CTS.Token);
+                await SceneTransitionManager.ReloadScene();
+            }
         }
 
-        public void FailLevel()
-        {
-            Debug.Log("Level failed");
-            EndGame();
-            //and maybe an event that will trigger some "LEVEL FAILED" UI,
-            //and then scene manager will restart the scene
-        }
+        
 
-        private void TimeOutHandler()
+        //public void FailLevel()
+        //{
+        //    Debug.Log("Level failed");
+        //    EndGame();
+        //    //and maybe an event that will trigger some "LEVEL FAILED" UI,
+        //    //and then scene manager will restart the scene
+        //}
+
+        private async void TimeOutHandler()
         {
             if (levelState.gameRunning)
             {
                 Debug.Log("time's up!");
-                FailLevel();
+                //FailLevel();
+                await EndGame(true);
             }
         }
 
-        private void LGDeathHandler(LittleGuyMover lg)
+        private async void HandleRestartRequest()
+        {
+            if (levelState.gameRunning)
+            { 
+                await EndGame(true);
+            }
+        }
+
+        private async void LGDeathHandler(LittleGuyMover lg)
         {
             if (!lg) return;
 
@@ -126,7 +156,8 @@ namespace LGShuttle.Game
 
             if (levelState.gameRunning && levelState.SurvivalRate < levelParams.survivalRate)
             {
-                FailLevel();
+                //FailLevel();
+                await EndGame(true);
             }
         }
 
@@ -161,6 +192,8 @@ namespace LGShuttle.Game
         private void OnDisable()
         {
             Timer.TimedOut -= TimeOutHandler;
+            GameHUD.RestartRequested -= HandleRestartRequest;
+            LevelParamsMessenger.SendLevelParams -= ReceiveLevelParams;
         }
 
         private void OnDestroy()

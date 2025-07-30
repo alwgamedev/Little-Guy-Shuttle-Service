@@ -25,8 +25,8 @@ namespace LGShuttle.Game
 
         float jumpCooldownTimer;
 
-        bool Grounded => frontWheel.IsTouchingLayers(GlobalGameTools.GroundLayer)
-            || backWheel.IsTouchingLayers(GlobalGameTools.GroundLayer);
+        bool Grounded => frontWheel.IsTouchingLayers(GlobalGameTools.Instance.GroundLayer)
+            || backWheel.IsTouchingLayers(GlobalGameTools.Instance.GroundLayer);
 
 
         public static Rigidbody2D Board { get; private set; }
@@ -149,6 +149,9 @@ namespace LGShuttle.Game
         private void OnGameEnded(ILevelManager lm)
         {
             inputEnabled = false;
+            moveInput = 0;
+            jumpInput = 0;
+            rotateInput = 0;
         }
 
         private void OnDisable()
