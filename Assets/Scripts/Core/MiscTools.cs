@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -14,12 +15,12 @@ namespace LGShuttle.Core
     {
         public static readonly System.Random rng = new();
 
-        public static async Task DelayGameTime(float time, CancellationToken token)
+        public static async UniTask DelayGameTime(float time, CancellationToken token)
         {
             float timer = 0;
             while (timer < time)
             {
-                await Task.Yield();
+                await UniTask.Yield();
                 //previously I was checking token before the task.yield, so keep an eye out on whether this causes issues
                 if (token.IsCancellationRequested)
                 {
@@ -29,12 +30,12 @@ namespace LGShuttle.Core
             }
         }
 
-        public static async Task WaitUntil(Func<bool> p, float timeOut, CancellationToken token)
+        public static async UniTask WaitUntil(Func<bool> p, float timeOut, CancellationToken token)
         {
             float timer = 0;
             while (!p() && timer < timeOut)
             {
-                await Task.Yield();
+                await UniTask.Yield();
                 if (token.IsCancellationRequested)
                 {
                     throw new TaskCanceledException();

@@ -12,7 +12,6 @@ namespace LGShuttle.Game
         [SerializeField] RandomizableFloat panicRandomizer;
         [SerializeField] float randomPanicLerpRate;
         [SerializeField] RandomizableFloat repositionTime;
-        //[SerializeField] RandomizableColor[] randomColors;
         [SerializeField] float colorSaturation;
         [SerializeField] RandomizableFloat randomScale;
 
@@ -117,14 +116,6 @@ namespace LGShuttle.Game
                 ResetRepositionTimer();
             }
         }
-
-
-        ////STATE CHANGE
-
-        //private void OnBalanceBroken()
-        //{
-
-        //}
 
 
         //ANIMATION

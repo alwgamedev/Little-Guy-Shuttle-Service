@@ -1,12 +1,23 @@
-﻿using System;
+﻿using LGShuttle.UI;
+using System;
 using UnityEngine;
 
 namespace LGShuttle.Game
 {
     public class LevelTimer : MonoBehaviour
     {
+        float timeRemaining;
+
         public float TimeLimit { get; private set; }
-        public float TimeRemaining { get; private set; }
+        public float TimeRemaining
+        {
+            get => timeRemaining;
+            private set
+            {
+                timeRemaining = value;
+                GameHUD.Instance.UpdateTimer(TimeRemaining);
+            }
+        }
         public bool Running { get; private set; }   
 
         public event Action TimedOut;
@@ -16,7 +27,6 @@ namespace LGShuttle.Game
             if (Running)
             {
                 TimeRemaining = Mathf.Max(TimeRemaining - Time.deltaTime, 0);
-                //+ update ui timer
                 if (TimeRemaining <= 0)
                 {
                     TimeOut();

@@ -3,9 +3,10 @@ using UnityEngine;
 
 namespace LGShuttle.Game
 {
+
     [RequireComponent(typeof(LevelTimer))]
     [RequireComponent(typeof(LittleGuySpawner))]
-    public class LevelManager : MonoBehaviour
+    public class LevelManager : MonoBehaviour, ILevelManager
     {
         [SerializeField] LevelParams testLevelParams;
 
@@ -24,16 +25,16 @@ namespace LGShuttle.Game
         LittleGuySpawner spawner;
         LittleGuyController[] spawned;
         LevelParams levelParams;
-        LevelState state;
+        LevelState levelState;
 
         public LevelTimer Timer { get; private set; }
         public LevelParams LevelParams => levelParams;
-        public LevelState State => state;
+        public LevelState LevelState => levelState;
 
-        public static event Action<LevelManager> LevelPrepared;
-        public static event Action<LevelManager> GameStarted;
-        public static event Action<LevelManager> LevelStateUpdate;
-        public static event Action<LevelManager> GameEnded;
+        public static event Action<ILevelManager> LevelPrepared;
+        public static event Action<ILevelManager> GameStarted;
+        public static event Action<ILevelManager> LevelStateUpdate;
+        public static event Action<ILevelManager> GameEnded;
         //WE'LL ADD SUCH EVENTS LATER ONCE WE KNOW HOW/IF WE ACTUALLY NEED THEM
 
         //WE'LL PROBABLY USE THESE EVENTS FOR UI (so just static events rather than static LM)
@@ -65,34 +66,35 @@ namespace LGShuttle.Game
             this.levelParams = levelParams;
             Timer.SetTimer(levelParams.timeLimit);
             spawned = spawner.Spawn(this.levelParams.lgToSpawn);
-            state.spawned = spawned.Length;
-            state.remaining = spawned.Length;
+            levelState.spawned = spawned.Length;
+            levelState.remaining = spawned.Length;
             SubscribeDeathHandlers();
             LevelPrepared?.Invoke(this);
         }
 
         public void StartGame()
         {
-            //should never happen, but just in case, to help identify bugs
-            if (state.gameRunning)
+            //should never happen, but just in case so we don't miss a bug
+            if (levelState.gameRunning)
             {
                 throw new Exception("Tried to start game, but the game is already running.");
             }
 
-            state.gameRunning = true;
+            levelState.gameRunning = true;
+            Timer.StartTimer();
             GameStarted?.Invoke(this);
         }
 
         public void EndGame()
         {
-            //should never happen, but just in case, to help identify bugs
-            if (!state.gameRunning)
+            //should never happen, but just in case so we don't miss a bug
+            if (!levelState.gameRunning)
             {
                 throw new Exception("Tried to end game, but the game is not running.");
             }
 
             Timer.StopTimer();
-            state.gameRunning = false;
+            levelState.gameRunning = false;
             GameEnded?.Invoke(this);
         }
 
@@ -106,7 +108,7 @@ namespace LGShuttle.Game
 
         private void TimeOutHandler()
         {
-            if (state.gameRunning)
+            if (levelState.gameRunning)
             {
                 Debug.Log("time's up!");
                 FailLevel();
@@ -115,15 +117,14 @@ namespace LGShuttle.Game
 
         private void LGDeathHandler(LittleGuyMover lg)
         {
-            state.remaining--;
-            if (lg)
-            {
-                lg.Death -= LGDeathHandler;
-            }
+            if (!lg) return;
+
+            levelState.remaining--;
+            lg.Death -= LGDeathHandler;
 
             LevelStateUpdate?.Invoke(this);
 
-            if (state.gameRunning && state.SurvivalRate < levelParams.survivalRate)
+            if (levelState.gameRunning && levelState.SurvivalRate < levelParams.survivalRate)
             {
                 FailLevel();
             }

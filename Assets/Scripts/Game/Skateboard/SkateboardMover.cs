@@ -19,8 +19,9 @@ namespace LGShuttle.Game
 
         int moveInput;
         int rotateInput;
-        int jumpInput;//0 = no jumpInput, 1 = jumpJustPressed, 2 = jumpHeld;
+        int jumpInput;//0 = no jumpInput, 1 = jumpJustPressed, 2 = jumpHeld
         bool awaitingLanding;
+        bool inputEnabled;
 
         float jumpCooldownTimer;
 
@@ -40,21 +41,17 @@ namespace LGShuttle.Game
             RandomBoardAnchorPosition = randomBoardAnchorPosition;
         }
 
+        private void OnEnable()
+        {
+            LevelManager.GameStarted += OnGameStarted;
+            LevelManager.GameEnded += OnGameEnded;
+        }
+
         private void Update()
         {
-            moveInput = (Input.GetKey(KeyCode.A) ? -1 : 0)
-                + (Input.GetKey(KeyCode.D) ? 1 : 0);
-
-            rotateInput = (Input.GetKey(KeyCode.RightArrow) ? 1 : 0)
-                + (Input.GetKey(KeyCode.LeftArrow) ? -1 : 0);
-
-            if (Input.GetKeyDown(KeyCode.Space) && CanJump())
+            if (inputEnabled)
             {
-                jumpInput = 1;
-            }
-            else if (Input.GetKeyUp(KeyCode.Space))
-            {
-                jumpInput = 0;
+                UpdateInput();
             }
 
             if (jumpCooldownTimer > 0)
@@ -96,10 +93,26 @@ namespace LGShuttle.Game
             }
         }
 
+        private void UpdateInput()
+        {
+            moveInput = (Input.GetKey(KeyCode.A) ? -1 : 0)
+                            + (Input.GetKey(KeyCode.D) ? 1 : 0);
+
+            rotateInput = (Input.GetKey(KeyCode.RightArrow) ? 1 : 0)
+                + (Input.GetKey(KeyCode.LeftArrow) ? -1 : 0);
+
+            if (Input.GetKeyDown(KeyCode.Space) && CanJump())
+            {
+                jumpInput = 1;
+            }
+            else if (Input.GetKeyUp(KeyCode.Space))
+            {
+                jumpInput = 0;
+            }
+        }
+
         private void Accelerate(int direction, float goalSpeed, float acceleration)
         {
-            //board.AddForce(direction * acceleration * board.mass * transform.right);
-
             var s = Vector2.Dot(Board.linearVelocity, direction * Board.transform.right);
             var f = (goalSpeed - s) * acceleration * Board.mass * direction * Board.transform.right;
             Board.AddForce(f);
@@ -113,7 +126,7 @@ namespace LGShuttle.Game
         private bool CanJump()
         {
             return jumpCooldownTimer <= 0 && !awaitingLanding;
-            //so you will be allowed to jump mid-air, but once you jump you have to hit ground 
+            //so you WILL be allowed to jump mid-air, but once you jump you have to hit ground 
             //before you can jump again
         }
 
@@ -126,6 +139,22 @@ namespace LGShuttle.Game
         private void JumpHold()
         {
             board.AddForce(jumpHoldForce * board.mass * Vector2.up);
+        }
+
+        private void OnGameStarted(ILevelManager lm)
+        {
+            inputEnabled = true;
+        }
+
+        private void OnGameEnded(ILevelManager lm)
+        {
+            inputEnabled = false;
+        }
+
+        private void OnDisable()
+        {
+            LevelManager.GameStarted -= OnGameStarted;
+            LevelManager.GameEnded -= OnGameEnded;
         }
     }
 }

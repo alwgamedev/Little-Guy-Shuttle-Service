@@ -8,14 +8,6 @@ namespace LGShuttle.Game
     {
         [SerializeField] Transform frontFoot;
         [SerializeField] Transform backFoot;
-        //[SerializeField] float balanceStrength;
-        //[Range(0, 90)][SerializeField] float balanceBreakAngle = 60;
-        //[SerializeField] float runThreshold;
-        //[SerializeField] float walkSpeed;
-        //[SerializeField] float runSpeed;
-        //[SerializeField] float accelMultiplier;
-        //[SerializeField] float accelerationDampTime;
-        //[SerializeField] float destinationTolerance = 0.1f;
         [SerializeField] LittleGuyPhysicsSettings physicsSettings;
 
         Vector2 boardAnchorPtLocalPos;
@@ -34,12 +26,10 @@ namespace LGShuttle.Game
         public bool BalanceBroken { get; private set; }
         public bool Dead { get; private set; }
         public float RunThreshold => physicsSettings.runThreshold;
-        public bool ShouldRun => /*!repositioning &&*/ Mathf.Abs(SkateboardMover.VelocityAlongBoard) > RunThreshold;
+        public bool ShouldRun => Mathf.Abs(SkateboardMover.VelocityAlongBoard) > RunThreshold;
         public float MoveSpeed => ShouldRun ? RunSpeed : WalkSpeed;
         public float WalkSpeed => physicsSettings.walkSpeed;
         public float RunSpeed => physicsSettings.runSpeed;
-
-        //public event Action BalanceBroke;
 
         public event Action<LittleGuyMover> Death;
 
@@ -48,7 +38,6 @@ namespace LGShuttle.Game
             Rigidbody = GetComponent<Rigidbody2D>();
             Collider = GetComponent<Collider2D>();
             Height = Collider.bounds.extents.y * 2;
-            //balanceBreakPoint = Mathf.Cos(Mathf.Deg2Rad * (physicsSettings.balanceBreakAngle + 90));
         }
 
         private void Start()
@@ -64,7 +53,6 @@ namespace LGShuttle.Game
         public void ChooseNewAnchorPoint()
         {
             boardAnchorPtLocalPos = SkateboardMover.RandomBoardAnchorLocalPosition;
-            //repositioning = true;
         }
 
         private void SetAnchorPtToCurrentPosition()
@@ -97,12 +85,12 @@ namespace LGShuttle.Game
         {
             if (Dead || !gameObject) return;
 
-            var lm = 1 << collision.gameObject.layer;
-            if (lm == GlobalGameTools.SkateboardLayer && BalanceBroken)
+            var layer = 1 << collision.gameObject.layer;
+            if (BalanceBroken && layer == GlobalGameTools.SkateboardLayer)
             {
                 RegainBalance();
             }
-            else if (lm == GlobalGameTools.GroundLayer)
+            else if (layer == GlobalGameTools.GroundLayer)
             {
                 Dead = true;
                 Death?.Invoke(this);
@@ -147,7 +135,6 @@ namespace LGShuttle.Game
 
             if (!Move(MoveSpeed, a, d))
             {
-                //repositioning = false;
                 ResetAccelerationTimer();
             }
         }
@@ -211,16 +198,8 @@ namespace LGShuttle.Game
         public void Balance()
         {
             var d = -Vector2.Dot(transform.right, SkateboardMover.Board.transform.up);
-            d *= Mathf.Sqrt(Mathf.Abs(d));//I like the feel this gives it (and * Abs(d) was too much at extreme angles)
+            d *= Mathf.Sqrt(Mathf.Abs(d));//helps LG get up from extreme angles while keeping a nice feel
             Rigidbody.AddTorque(d * physicsSettings.balanceStrength * Rigidbody.mass);
-            //if (d < balanceBreakPoint)
-            //{
-            //    BreakBalance();
-            //}
-            //else
-            //{
-            //    Rigidbody.AddTorque(d * physicsSettings.balanceStrength * Rigidbody.mass);
-            //}
         }
 
         public void KeepFeetLevel()
