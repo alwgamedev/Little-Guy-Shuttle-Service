@@ -37,7 +37,7 @@ namespace LGShuttle.Game
 
         public static event Action<ILevelManager> LevelPrepared;
         public static event Action<ILevelManager> GameStarted;
-        public static event Action<ILevelManager> LevelStateUpdate;
+        public static event Action<ILevelManager> LGDeath;
         public static event Action<ILevelManager> GameEnded;
         //WE'LL ADD SUCH EVENTS LATER ONCE WE KNOW HOW/IF WE ACTUALLY NEED THEM
 
@@ -152,7 +152,7 @@ namespace LGShuttle.Game
             levelState.remaining--;
             lg.Death -= LGDeathHandler;
 
-            LevelStateUpdate?.Invoke(this);
+            LGDeath?.Invoke(this);
 
             if (levelState.gameRunning && levelState.SurvivalRate < levelParams.survivalRate)
             {

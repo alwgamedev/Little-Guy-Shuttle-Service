@@ -79,7 +79,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1063366492453609412}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -90,7 +90,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 160}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 1}
 --- !u!222 &3723508015185430849
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -135,7 +135,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 40}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 1}
 --- !u!222 &7068514687855428732
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -271,7 +271,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 35}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 1}
 --- !u!222 &8650788777036236269
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1071,6 +1071,7 @@ GameObject:
   - component: {fileID: 2339008560332369907}
   - component: {fileID: 1156972557842743051}
   - component: {fileID: 6625759041929861828}
+  - component: {fileID: 5793074138923395922}
   m_Layer: 5
   m_Name: Survival Counter
   m_TagString: Untagged
@@ -1117,7 +1118,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 1
+  m_ChildAlignment: 2
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
@@ -1171,6 +1172,23 @@ MonoBehaviour:
   numerator: {fileID: 436589555044872626}
   denominator: {fileID: 6861564379104649410}
   passCaption: {fileID: 8031287493006019268}
+--- !u!111 &5793074138923395922
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5241770460536411553}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 7400000, guid: 517d998eaef7d3242b926ec8cc61a64a, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 517d998eaef7d3242b926ec8cc61a64a, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1 &5442255178640647152
 GameObject:
   m_ObjectHideFlags: 0

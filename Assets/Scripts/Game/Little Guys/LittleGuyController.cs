@@ -17,6 +17,7 @@ namespace LGShuttle.Game
 
         LittleGuyMover mover;
         Animator animator;
+        ParticleSystem deathParticles;
         float randomPanic;
 
         float _repositionTime;
@@ -42,13 +43,16 @@ namespace LGShuttle.Game
                 mover = GetComponent<LittleGuyMover>();
             }
             animator = GetComponent<Animator>();
+            deathParticles = GetComponentInChildren<ParticleSystem>();
         }
 
         private void Start()
         {
+            mover.Death += OnDeath;
             ResetRepositionTimer();
             RandomizeColor();
             RandomizeScale();
+
         }
 
         private void Update()
@@ -76,6 +80,12 @@ namespace LGShuttle.Game
             }
         }
 
+        private void OnDeath(LittleGuyMover lg)
+        {
+            deathParticles.transform.SetParent(null);
+            deathParticles.Play();
+        }
+
 
         //SETTINGS
 
@@ -91,6 +101,9 @@ namespace LGShuttle.Game
             {
                 sr.color *= c;
             }
+
+            var m = deathParticles.main;
+            m.startColor = new ParticleSystem.MinMaxGradient(m.startColor.colorMin * c, m.startColor.colorMax * c);
         }
 
         private void RandomizeScale()

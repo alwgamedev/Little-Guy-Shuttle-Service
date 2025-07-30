@@ -92,15 +92,20 @@ namespace LGShuttle.Game
             }
             else if (layer == GlobalGameTools.Instance.GroundLayer)
             {
-                Dead = true;
-                Death?.Invoke(this);
-                Destroy(gameObject);
+                Die();
             }
         }
 
         private void OnCollisionStay2D(Collision2D collision)
         {
             OnCollisionEnter2D(collision);
+        }
+
+        private void Die()
+        {
+            Dead = true;
+            Death?.Invoke(this);
+            Destroy(gameObject);
         }
 
 

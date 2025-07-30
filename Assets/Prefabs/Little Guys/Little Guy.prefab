@@ -35,6 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8851287752367129282}
+  - {fileID: 7174119635844336627}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &4190369995327947988
@@ -140,15 +141,15 @@ MonoBehaviour:
   physicsSettings:
     balanceStrength: 125
     balancedAngularDamping: 15
-    fallenAngularDamping: 9
+    fallenAngularDamping: 5
     runThreshold: 2.5
     walkSpeed: 2.5
     runSpeed: 5.5
-    accelMultiplier: 7.5
+    accelMultiplier: 10
     randomAccelerationDampTime:
       mode: 0
-      min: 0.1
-      max: 0.55
+      min: 0
+      max: 0.6
     destinationTolerance: 0.75
     groundednessToleranceFactor: 2
 --- !u!114 &1664298842843999412
@@ -169,7 +170,7 @@ MonoBehaviour:
   panicFromMoveImpetusMax: 0.75
   panicRandomizer:
     mode: 0
-    min: -1.3
+    min: -0.9
     max: 1.3
   randomPanicLerpRate: 0.25
   repositionTime:
@@ -181,6 +182,80 @@ MonoBehaviour:
     mode: 0
     min: 0.75
     max: 1.25
+--- !u!1001 &2737440387749007434
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5405145560198378217}
+    m_Modifications:
+    - target: {fileID: 2061231064250539712, guid: a339e305bdcec504ba94d1fcffefc0ff, type: 3}
+      propertyPath: m_Name
+      value: Death Particles
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076331158476577721, guid: a339e305bdcec504ba94d1fcffefc0ff, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076331158476577721, guid: a339e305bdcec504ba94d1fcffefc0ff, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076331158476577721, guid: a339e305bdcec504ba94d1fcffefc0ff, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076331158476577721, guid: a339e305bdcec504ba94d1fcffefc0ff, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076331158476577721, guid: a339e305bdcec504ba94d1fcffefc0ff, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076331158476577721, guid: a339e305bdcec504ba94d1fcffefc0ff, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076331158476577721, guid: a339e305bdcec504ba94d1fcffefc0ff, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076331158476577721, guid: a339e305bdcec504ba94d1fcffefc0ff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076331158476577721, guid: a339e305bdcec504ba94d1fcffefc0ff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076331158476577721, guid: a339e305bdcec504ba94d1fcffefc0ff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5501809723220516062, guid: a339e305bdcec504ba94d1fcffefc0ff, type: 3}
+      propertyPath: InitialModule.startColor.minColor.b
+      value: 0.5471698
+      objectReference: {fileID: 0}
+    - target: {fileID: 5501809723220516062, guid: a339e305bdcec504ba94d1fcffefc0ff, type: 3}
+      propertyPath: InitialModule.startColor.minColor.g
+      value: 0.5471698
+      objectReference: {fileID: 0}
+    - target: {fileID: 5501809723220516062, guid: a339e305bdcec504ba94d1fcffefc0ff, type: 3}
+      propertyPath: InitialModule.startColor.minColor.r
+      value: 0.5471698
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a339e305bdcec504ba94d1fcffefc0ff, type: 3}
+--- !u!4 &7174119635844336627 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5076331158476577721, guid: a339e305bdcec504ba94d1fcffefc0ff, type: 3}
+  m_PrefabInstance: {fileID: 2737440387749007434}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7924577618380077852
 PrefabInstance:
   m_ObjectHideFlags: 0

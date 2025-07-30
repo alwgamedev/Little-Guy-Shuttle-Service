@@ -886,7 +886,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4740548018320934682, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5405145560198378217, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -926,22 +926,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5405145560198378217, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5868953112784160597, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
-      propertyPath: physicsSettings.accelMultiplier
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 5868953112784160597, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
-      propertyPath: physicsSettings.fallenAngularDamping
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5868953112784160597, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
-      propertyPath: physicsSettings.randomAccelerationDampTime.max
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5868953112784160597, guid: f3578ca0abd94754ab0836af342029dd, type: 3}
-      propertyPath: physicsSettings.randomAccelerationDampTime.min
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

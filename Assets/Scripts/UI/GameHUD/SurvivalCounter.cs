@@ -10,11 +10,25 @@ namespace LGShuttle.UI
         [SerializeField] TextMeshProUGUI denominator;
         [SerializeField] TextMeshProUGUI passCaption;
 
-        public void UpdateUI(LevelParams p, LevelState s)
+        Animation deathAnim;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            deathAnim = GetComponentInChildren<Animation>();
+        }
+
+        public void UpdateUI(LevelParams p, LevelState s, bool animateDeath = false)
         {
             numerator.text = s.remaining.ToString();
             denominator.text = s.spawned.ToString();
             passCaption.text = $"PASS: {(int)(p.survivalRate * 100)}%";
+            if (animateDeath)
+            {
+                deathAnim.Play();
+            }
         }
+
+
     }
 }

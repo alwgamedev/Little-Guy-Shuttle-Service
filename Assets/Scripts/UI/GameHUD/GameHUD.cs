@@ -29,7 +29,7 @@ namespace LGShuttle.UI
         {
             LevelManager.LevelPrepared += OnLevelPrepared;
             LevelManager.GameStarted += OnGameStarted;
-            LevelManager.LevelStateUpdate += OnLevelStateUpdate;
+            LevelManager.LGDeath += OnLGDeath;
             LevelManager.GameEnded += OnGameEnded;
             restartUI.ConfirmedRestart += SendRestartRequest;
         }
@@ -45,9 +45,9 @@ namespace LGShuttle.UI
             timer.UpdateUI(timeRemaining); 
         }
 
-        public void UpdateSurvivalCounter(LevelParams p, LevelState s)
+        public void UpdateSurvivalCounter(LevelParams p, LevelState s, bool animateDeath = false)
         {
-            survivalCounter.UpdateUI(p, s);
+            survivalCounter.UpdateUI(p, s, animateDeath);
         }
 
         private async void OnLevelPrepared(ILevelManager levelManager)
@@ -62,9 +62,9 @@ namespace LGShuttle.UI
             //e.g. "GO!" animation
         }
 
-        private void OnLevelStateUpdate(ILevelManager levelManager)
+        private void OnLGDeath(ILevelManager levelManager)
         {
-            UpdateUI(levelManager);
+            UpdateSurvivalCounter(levelManager.LevelParams, levelManager.LevelState, true);
         }
 
         private async void OnGameEnded(ILevelManager levelManager)
@@ -115,7 +115,7 @@ namespace LGShuttle.UI
         {
             LevelManager.LevelPrepared -= OnLevelPrepared;
             LevelManager.GameStarted -= OnGameStarted;
-            LevelManager.LevelStateUpdate -= OnLevelStateUpdate;
+            LevelManager.LGDeath -= OnLGDeath;
             LevelManager.GameEnded -= OnGameEnded;
             restartUI.ConfirmedRestart -= SendRestartRequest;
         }
