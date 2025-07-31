@@ -74,13 +74,13 @@ namespace LGShuttle.UI
         private async void OnGameEnded(ILevelManager levelManager)
         {
             restartUI.OnGameEnded(levelManager);
-            if (levelManager.LevelFailed)
+            if (levelManager.LevelState.result == LevelCompletionResult.failed)
             {
                 var a = LevelFailedAnimation();
                 var b = FadeOutPrimaryUI();
                 await UniTask.WhenAll(a, b);
             }
-            else
+            else if (levelManager.LevelState.result == LevelCompletionResult.passed)
             {
                 levelCompleteUI.UpdateUI(levelManager);
                 levelCompleteUI.Show();

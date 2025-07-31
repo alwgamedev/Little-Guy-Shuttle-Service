@@ -1,5 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
-using LGShuttle.Game;
+﻿using LGShuttle.Game;
 using System;
 using TMPro;
 using UnityEngine;
@@ -13,7 +12,7 @@ namespace LGShuttle.UI
 
         float confirmTimer;
         bool confirming;
-        bool gameRunning;
+        bool listenToInput;
 
         public event Action ConfirmedRestart;
 
@@ -24,17 +23,13 @@ namespace LGShuttle.UI
 
         private void Update()
         {
-            if (!gameRunning) return;
+            if (!listenToInput) return;
 
             if (Input.GetKeyDown(KeyCode.R))
             {
                 BeginConfirm();
             }
-            else if (Input.GetKeyUp(KeyCode.R) && confirming)
-            {
-                CancelConfirm();
-            }
-            else if (confirming)
+            else if (Input.GetKey(KeyCode.R) && confirming)
             {
                 confirmTimer = Mathf.Max(confirmTimer - Time.deltaTime, 0);
                 DisplayConfirmMessage();
@@ -44,17 +39,22 @@ namespace LGShuttle.UI
                     RestartConfirmed();
                 }
             }
+            else if (confirming)
+            {
+                CancelConfirm();
+            }
         }
 
         public void OnGameStarted(ILevelManager lm)
         {
+            listenToInput = true;
             DisplayDefaultMessage();
-            gameRunning = true;
+            Update();
         }
 
         public void OnGameEnded(ILevelManager lm)
         {
-            gameRunning = false;
+            listenToInput = false;
             if (confirming)
             {
                 CancelConfirm();
@@ -75,7 +75,9 @@ namespace LGShuttle.UI
 
         private void RestartConfirmed()
         {
+            listenToInput = false;
             confirming = false;
+            //Debug.Log("restart confirmed. restarting...");
             ConfirmedRestart?.Invoke();
         }
 

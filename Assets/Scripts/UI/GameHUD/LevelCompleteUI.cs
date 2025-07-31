@@ -15,8 +15,6 @@ namespace LGShuttle.UI
         [SerializeField] TextMeshProUGUI score;
         [SerializeField] Image[] stars;
 
-        string[] completionBonusMessages = new string[] { "YEP!", "YAY!", "YES" };
-
         public Button ContinueButton => continueButton;
 
         public void UpdateUI(ILevelManager lm)
@@ -31,9 +29,8 @@ namespace LGShuttle.UI
 
         private int DisplayCompletionBonus(ILevelManager lm)
         {
-            var i = MiscTools.rng.Next(completionBonusMessages.Length);
             int bonus = lm.LevelParams.completionBonus;
-            completionBonus.text = $"Completion Bonus: {completionBonusMessages[i]}   (<b>+{bonus}</b> pts)";
+            completionBonus.text = $"Completion Bonus: YEP!   (<b>+{bonus}</b> pts)";
             return bonus;
         }
 

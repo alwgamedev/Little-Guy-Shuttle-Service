@@ -94,13 +94,14 @@ namespace LGShuttle.Game
             GameStarted?.Invoke(this);
         }
 
-        public async UniTask EndGame(bool restart = false)
+        public async UniTask EndGame(LevelCompletionResult result)
         {
             timer.StopTimer();
             levelState.gameRunning = false;
+            levelState.result = result;
             GameEnded?.Invoke(this);
 
-            if (restart)
+            if (result == LevelCompletionResult.failed || result == LevelCompletionResult.restart)
             {
                 await MiscTools.DelayGameTime(1, GlobalGameTools.Instance.CTS.Token);
                 await SceneLoader.ReloadScene();
@@ -125,7 +126,7 @@ namespace LGShuttle.Game
         {
             if (levelState.gameRunning)
             {
-                await EndGame(true);
+                await EndGame(LevelCompletionResult.failed);
             }
         }
 
@@ -133,7 +134,7 @@ namespace LGShuttle.Game
         {
             if (levelState.gameRunning)
             { 
-                await EndGame(true);
+                await EndGame(LevelCompletionResult.restart);
             }
         }
 
@@ -141,7 +142,7 @@ namespace LGShuttle.Game
         {
             if (levelState.gameRunning)
             {
-                await EndGame();
+                await EndGame(LevelCompletionResult.passed);
             }
         }
 
@@ -157,7 +158,7 @@ namespace LGShuttle.Game
             if (levelState.gameRunning && levelState.SurvivalRate < levelParams.survivalRate)
             {
                 //FailLevel();
-                await EndGame(true);
+                await EndGame(LevelCompletionResult.failed);
             }
         }
 
