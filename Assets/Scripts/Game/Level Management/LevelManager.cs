@@ -31,15 +31,17 @@ namespace LGShuttle.Game
         LevelTimer timer;
         LevelParams levelParams;
         LevelState levelState;
+        CumulativeStats cumulativeStats;
 
         public ILevelTimer Timer => timer;
         public LevelParams LevelParams => levelParams;
         public LevelState LevelState => levelState;
+        public CumulativeStats CumulativeStats => cumulativeStats;
 
         public static event Action<ILevelManager> LevelPrepared;
-        public static event Action<ILevelManager> GameStarted;
+        public static event Action<ILevelManager> LevelStarted;
         public static event Action<ILevelManager> LGDeath;
-        public static event Action<ILevelManager> GameEnded;
+        public static event Action<ILevelManager> LevelEnded;
         //WE'LL ADD SUCH EVENTS LATER ONCE WE KNOW HOW/IF WE ACTUALLY NEED THEM
 
         //WE'LL PROBABLY USE THESE EVENTS FOR UI (so just static events rather than static LM)
@@ -60,20 +62,20 @@ namespace LGShuttle.Game
         {
             timer.TimedOut += TimeOutHandler;
             GameHUD.RequestRestart += HandleRestartRequest;
+            GameHUD.RequestQuit += HandleQuitRequest;
             LevelParamsMessenger.SendLevelParams += ReceiveLevelParams;
             FinishLine.FinishLineTriggered += OnFinishLineCrossed;
         }
 
-        //private void Start()
-        //{
-        //    //PrepareLevel(testLevelParams);
-        //    StartGame();
-        //}
+        public void ResetCumulativeStats()
+        {
+            cumulativeStats = new();
+        }
 
         private void ReceiveLevelParams(LevelParams levelParams)
         {
             PrepareLevel(levelParams);
-            StartGame();
+            StartLevel();
         }
 
         public void PrepareLevel(LevelParams levelParams)
@@ -87,19 +89,32 @@ namespace LGShuttle.Game
             LevelPrepared?.Invoke(this);
         }
 
-        public void StartGame()
+        public void StartLevel()
         {
             levelState.gameRunning = true;
             timer.StartTimer();
-            GameStarted?.Invoke(this);
+            LevelStarted?.Invoke(this);
         }
 
-        public async UniTask EndGame(LevelCompletionResult result)
+        public async UniTask EndLevel(LevelCompletionResult result)
         {
             timer.StopTimer();
             levelState.gameRunning = false;
+            levelState.attempts++;
             levelState.result = result;
-            GameEnded?.Invoke(this);
+
+            if (result == LevelCompletionResult.passed)
+            {
+                levelState.CalculateStats(this);
+                cumulativeStats.OnLevelPassed(levelState.Stats);
+                levelState.attempts = 0;
+            }
+            else
+            {
+                cumulativeStats.OnLevelFailed(this);
+            }
+
+            LevelEnded?.Invoke(this);
 
             if (result == LevelCompletionResult.failed || result == LevelCompletionResult.restart)
             {
@@ -126,7 +141,7 @@ namespace LGShuttle.Game
         {
             if (levelState.gameRunning)
             {
-                await EndGame(LevelCompletionResult.failed);
+                await EndLevel(LevelCompletionResult.failed);
             }
         }
 
@@ -134,7 +149,15 @@ namespace LGShuttle.Game
         {
             if (levelState.gameRunning)
             { 
-                await EndGame(LevelCompletionResult.restart);
+                await EndLevel(LevelCompletionResult.restart);
+            }
+        }
+
+        private async void HandleQuitRequest()
+        {
+            if (levelState.gameRunning)
+            {
+                await EndLevel(LevelCompletionResult.quit);
             }
         }
 
@@ -142,7 +165,7 @@ namespace LGShuttle.Game
         {
             if (levelState.gameRunning)
             {
-                await EndGame(LevelCompletionResult.passed);
+                await EndLevel(LevelCompletionResult.passed);
             }
         }
 
@@ -158,7 +181,7 @@ namespace LGShuttle.Game
             if (levelState.gameRunning && levelState.SurvivalRate < levelParams.survivalRate)
             {
                 //FailLevel();
-                await EndGame(LevelCompletionResult.failed);
+                await EndLevel(LevelCompletionResult.failed);
             }
         }
 

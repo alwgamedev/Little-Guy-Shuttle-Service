@@ -13,6 +13,17 @@ namespace LGShuttle.Game
         public int completionBonus;
         [Range(0, 1)] public float survivalRate;
 
+        public int AdjustedCompletionBonus(int attempts)
+        {
+            if (attempts <= 7)
+            {
+                var f = 1 - (attempts / 7f);
+                return (int)(f * completionBonus);
+            }
+
+            return 0;
+        }
+
         public int TimeRemainingBonus(float timeRemaining)
         {
             return (int)(6 * timeRemaining);//6 pts per second remaining

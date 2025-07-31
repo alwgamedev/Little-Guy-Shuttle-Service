@@ -43,8 +43,8 @@ namespace LGShuttle.Game
 
         private void OnEnable()
         {
-            LevelManager.GameStarted += OnGameStarted;
-            LevelManager.GameEnded += OnGameEnded;
+            LevelManager.LevelStarted += OnLevelStarted;
+            LevelManager.LevelEnded += OnLevelEnded;
         }
 
         private void Update()
@@ -141,12 +141,12 @@ namespace LGShuttle.Game
             board.AddForce(jumpHoldForce * board.mass * Vector2.up);
         }
 
-        private void OnGameStarted(ILevelManager lm)
+        private void OnLevelStarted(ILevelManager lm)
         {
             inputEnabled = true;
         }
 
-        private void OnGameEnded(ILevelManager lm)
+        private void OnLevelEnded(ILevelManager lm)
         {
             inputEnabled = false;
             moveInput = 0;
@@ -156,8 +156,8 @@ namespace LGShuttle.Game
 
         private void OnDisable()
         {
-            LevelManager.GameStarted -= OnGameStarted;
-            LevelManager.GameEnded -= OnGameEnded;
+            LevelManager.LevelStarted -= OnLevelStarted;
+            LevelManager.LevelEnded -= OnLevelEnded;
         }
     }
 }

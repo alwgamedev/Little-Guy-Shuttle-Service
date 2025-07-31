@@ -19,44 +19,37 @@ namespace LGShuttle.UI
 
         public void UpdateUI(ILevelManager lm)
         {
-            int total = 0;
-            total += DisplayCompletionBonus(lm);
-            total += DisplayTimeRemaining(lm);
-            total += DisplaySurvivalRate(lm);
-            DisplayScore(total);
-            DisplayStarRating(lm.LevelParams.StarRating(total));
+            var stats = lm.LevelState.Stats;
+            DisplayCompletionBonus(stats);
+            DisplayTimeRemaining(stats);
+            DisplaySurvivalRate(stats);
+            DisplayScore(stats);
+            DisplayStarRating(stats);
         }
 
-        private int DisplayCompletionBonus(ILevelManager lm)
+        private void DisplayCompletionBonus(LevelCompletionStats stats)
         {
-            int bonus = lm.LevelParams.completionBonus;
-            completionBonus.text = $"Completion Bonus: YEP!   (<b>+{bonus}</b> pts)";
-            return bonus;
+            completionBonus.text = $"Total Attempts: {stats.attempts}  (<b>+{stats.completionBonus}</b> pts)";
         }
 
-        private int DisplayTimeRemaining(ILevelManager lm)
+        private void DisplayTimeRemaining(LevelCompletionStats stats)
         {
-            var formattedTime = lm.Timer.FormattedTimeRemaining();
-            int bonus = lm.LevelParams.TimeRemainingBonus(lm.Timer.TimeRemaining);
-            timeRemaining.text = $"Time Remaining: {formattedTime}   (<b>+{bonus}</b> pts)";
-            return bonus;
+            timeRemaining.text = $"Time Remaining: {stats.formattedTimeRemaining}  (<b>+{stats.timeBonus}</b> pts)";
         }
 
-        private int DisplaySurvivalRate(ILevelManager lm)
+        private void DisplaySurvivalRate(LevelCompletionStats stats)
         {
-            float sr = lm.LevelState.SurvivalRate;
-            int bonus = lm.LevelParams.SurvivalRateBonus(sr);
-            survivalRate.text = $"Survival Rate: {(int)(sr * 100)}%   (<b>+{bonus}</b> pts)";
-            return bonus;
+            survivalRate.text = $"Survival Rate: {stats.survivalPercent}%  (<b>+{stats.survivalBonus}</b> pts)";
         }
 
-        private void DisplayScore(int points)
+        private void DisplayScore(LevelCompletionStats stats)
         {
-            score.text = $"SCORE: {points} pts";
+            score.text = $"SCORE: {stats.totalScore} pts";
         }
 
-        private void DisplayStarRating(int rating)
+        private void DisplayStarRating(LevelCompletionStats stats)
         {
+            int rating = stats.starRating;
             for (int i = 0; i < 5; i++)
             {
                 stars[i].gameObject.SetActive(i < rating);

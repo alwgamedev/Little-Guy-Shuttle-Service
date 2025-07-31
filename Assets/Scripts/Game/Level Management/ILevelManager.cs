@@ -5,6 +5,6 @@
         public ILevelTimer Timer { get; }
         public LevelParams LevelParams { get; }
         public LevelState LevelState { get; }
-        //public bool LevelFailed { get; }
+        public CumulativeStats CumulativeStats { get; }
     }
 }

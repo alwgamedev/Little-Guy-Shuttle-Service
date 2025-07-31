@@ -11,9 +11,28 @@ namespace LGShuttle.SceneManagement
         public static float sceneFadeTime;
         public static HidableUI sceneFader;
 
+        public static int NumLevels => SceneManager.sceneCountInBuildSettings - 1;
+
         public static async UniTask ReloadScene()
         {
             await LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        public static async UniTask LoadMainMenu()
+        {
+            await LoadScene(0);
+        }
+
+        public static async UniTask<bool> LoadNextLevel()
+        {
+            var i = SceneManager.GetActiveScene().buildIndex + 1;
+            if (i  < SceneManager.sceneCountInBuildSettings)
+            {
+                await LoadScene(i);
+                return true;
+            }
+
+            return false;
         }
 
         public static async UniTask LoadScene(int buildIndex)

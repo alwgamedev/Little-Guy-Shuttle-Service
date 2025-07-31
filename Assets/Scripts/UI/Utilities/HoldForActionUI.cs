@@ -1,12 +1,16 @@
 ﻿using LGShuttle.Game;
-using System;
 using TMPro;
 using UnityEngine;
+using System;
+using Unity.VisualScripting;
 
 namespace LGShuttle.UI
 {
-    public class RestartUI : HidableUI
+    public class HoldForActionUI : HidableUI
     {
+        [SerializeField] string actionName;
+        [SerializeField] string keyName;
+        [SerializeField] KeyCode keyCode;
         [SerializeField] TextMeshProUGUI tmp;
         [SerializeField] float confirmTime;
 
@@ -14,7 +18,17 @@ namespace LGShuttle.UI
         bool confirming;
         bool listenToInput;
 
-        public event Action ConfirmedRestart;
+        string BaseMessage => $"HOLD {keyName.ToUpper()} TO {actionName.ToUpper()}";
+
+        public event Action Confirmed;
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+
+            LevelManager.LevelStarted += OnLevelStarted;
+            LevelManager.LevelEnded += OnLevelEnded;
+        }
 
         private void Start()
         {
@@ -25,18 +39,18 @@ namespace LGShuttle.UI
         {
             if (!listenToInput) return;
 
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(keyCode))
             {
                 BeginConfirm();
             }
-            else if (Input.GetKey(KeyCode.R) && confirming)
+            else if (Input.GetKey(keyCode) && confirming)
             {
                 confirmTimer = Mathf.Max(confirmTimer - Time.deltaTime, 0);
                 DisplayConfirmMessage();
 
                 if (confirmTimer == 0)
                 {
-                    RestartConfirmed();
+                    ActionConfirmed();
                 }
             }
             else if (confirming)
@@ -45,14 +59,14 @@ namespace LGShuttle.UI
             }
         }
 
-        public void OnGameStarted(ILevelManager lm)
+        public void OnLevelStarted(ILevelManager lm)
         {
             listenToInput = true;
             DisplayDefaultMessage();
             Update();
         }
 
-        public void OnGameEnded(ILevelManager lm)
+        public void OnLevelEnded(ILevelManager lm)
         {
             listenToInput = false;
             if (confirming)
@@ -73,27 +87,33 @@ namespace LGShuttle.UI
             DisplayDefaultMessage();
         }
 
-        private void RestartConfirmed()
+        private void ActionConfirmed()
         {
             listenToInput = false;
             confirming = false;
             //Debug.Log("restart confirmed. restarting...");
-            ConfirmedRestart?.Invoke();
+            Confirmed?.Invoke();
         }
 
         private void DisplayConfirmMessage()
         {
-            tmp.text = $"HOLD R TO RESTART ({Mathf.Ceil(confirmTimer)})";
+            tmp.text = $"{BaseMessage} ({Mathf.Ceil(confirmTimer)})";
         }
 
         private void DisplayDefaultMessage()
         {
-            tmp.text = "HOLD R TO RESTART";
+            tmp.text = BaseMessage;
+        }
+
+        private void OnDisable()
+        {
+            LevelManager.LevelStarted -= OnLevelStarted;
+            LevelManager.LevelEnded -= OnLevelEnded;
         }
 
         private void OnDestroy()
         {
-            ConfirmedRestart = null;
+            Confirmed = null;
         }
     }
 }

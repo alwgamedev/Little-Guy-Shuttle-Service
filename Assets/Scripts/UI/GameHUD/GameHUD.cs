@@ -11,31 +11,37 @@ namespace LGShuttle.UI
     {
         [SerializeField] float uiFadeTime = 1;
         [SerializeField] HidableUI levelFailedText;
+        [SerializeField] HoldForActionUI restartUI;
+        [SerializeField] HoldForActionUI escToMenuUI;
 
         LevelTimerUI timer;
         SurvivalCounter survivalCounter;
-        RestartUI restartUI;
         LevelCompleteUI levelCompleteUI;
+        GameOverUI gameOverUI;
+        CumulativeStats lastStatsSent;
 
         public static event Action RequestRestart;
+        public static event Action RequestQuit;
         //public static event Action RequestNextLevel;
 
         private void Awake()
         {
             timer = GetComponentInChildren<LevelTimerUI>();
             survivalCounter = GetComponentInChildren<SurvivalCounter>();
-            restartUI = GetComponentInChildren<RestartUI>();
             levelCompleteUI = GetComponentInChildren<LevelCompleteUI>();
+            gameOverUI = GetComponentInChildren<GameOverUI>();
         }
 
         private void OnEnable()
         {
             LevelManager.LevelPrepared += OnLevelPrepared;
-            LevelManager.GameStarted += OnGameStarted;
+            LevelManager.LevelStarted += OnLevelStarted;
             LevelManager.LGDeath += OnLGDeath;
-            LevelManager.GameEnded += OnGameEnded;
-            restartUI.ConfirmedRestart += SendRestartRequest;
-            levelCompleteUI.ContinueButton.onClick.AddListener(ContinueToNextLevel);
+            LevelManager.LevelEnded += OnLevelEnded;
+            restartUI.Confirmed += SendRestartRequest;
+            escToMenuUI.Confirmed += SendAbandonRequest;
+            levelCompleteUI.ContinueButton.onClick.AddListener(LevelCompleteUIButtonHandler);
+            gameOverUI.MainMenuButton.onClick.AddListener(GameOverUIButtonHandler);
         }
 
         public void UpdateUI(ILevelManager levelManager)
@@ -60,9 +66,8 @@ namespace LGShuttle.UI
             await FadeInPrimaryUI();
         }
 
-        private void OnGameStarted(ILevelManager levelManager)
+        private void OnLevelStarted(ILevelManager levelManager)
         {
-            restartUI.OnGameStarted(levelManager);
             //e.g. "GO!" animation
         }
 
@@ -71,20 +76,29 @@ namespace LGShuttle.UI
             UpdateSurvivalCounter(levelManager.LevelParams, levelManager.LevelState, true);
         }
 
-        private async void OnGameEnded(ILevelManager levelManager)
+        private async void OnLevelEnded(ILevelManager levelManager)
         {
-            restartUI.OnGameEnded(levelManager);
-            if (levelManager.LevelState.result == LevelCompletionResult.failed)
+            lastStatsSent = levelManager.CumulativeStats;
+
+            switch(levelManager.LevelState.result)
             {
-                var a = LevelFailedAnimation();
-                var b = FadeOutPrimaryUI();
-                await UniTask.WhenAll(a, b);
-            }
-            else if (levelManager.LevelState.result == LevelCompletionResult.passed)
-            {
-                levelCompleteUI.UpdateUI(levelManager);
-                levelCompleteUI.Show();
-                await FadeOutPrimaryUI();
+                case LevelCompletionResult.passed:
+                    levelCompleteUI.UpdateUI(levelManager);
+                    levelCompleteUI.Show();
+                    await FadeOutPrimaryUI();
+                    break;
+                case LevelCompletionResult.failed:
+                    var a = LevelFailedAnimation();
+                    var b = FadeOutPrimaryUI();
+                    await UniTask.WhenAll(a, b);
+                    break;
+                case LevelCompletionResult.restart:
+                    await FadeOutPrimaryUI();
+                    break;
+                case LevelCompletionResult.quit:
+                    await FadeOutPrimaryUI();
+                    ShowGameOverUI();
+                    break;
             }
         }
 
@@ -93,12 +107,36 @@ namespace LGShuttle.UI
             RequestRestart?.Invoke();
         }
 
-        private async void ContinueToNextLevel()
+        private void SendAbandonRequest()
         {
-            //RequestNextLevel?.Invoke();
-            Debug.Log("load next level here!");
+            RequestQuit?.Invoke();
+        }
+
+        private async void LevelCompleteUIButtonHandler()
+        {
             levelCompleteUI.Hide();
-            await SceneLoader.ReloadScene();
+            var next = await SceneLoader.LoadNextLevel();
+            if (!next)
+            {
+                ShowGameOverUI();
+            }
+        }
+
+        private async void GameOverUIButtonHandler()
+        {
+            async UniTask a()
+            {
+                await MiscTools.DelayGameTime(SceneLoader.sceneFadeTime, GlobalGameTools.Instance.CTS.Token);
+                gameOverUI.Hide();
+            }
+            var b = SceneLoader.LoadMainMenu();
+            await UniTask.WhenAll(a(), b);
+        }
+
+        private void ShowGameOverUI()
+        {
+            gameOverUI.DisplayStats(lastStatsSent);
+            gameOverUI.Show();
         }
 
         private async UniTask FadeInPrimaryUI()
@@ -106,7 +144,8 @@ namespace LGShuttle.UI
             var a = timer.FadeShow(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
             var b = survivalCounter.FadeShow(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
             var c = restartUI.FadeShow(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
-            await UniTask.WhenAll(a, b, c);
+            var d = escToMenuUI.FadeShow(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
+            await UniTask.WhenAll(a, b, c, d);
         }
 
         private async UniTask FadeOutPrimaryUI()
@@ -114,7 +153,8 @@ namespace LGShuttle.UI
             var a = timer.FadeHide(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
             var b = survivalCounter.FadeHide(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
             var c = restartUI.FadeHide(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
-            await UniTask.WhenAll(a, b, c);
+            var d = escToMenuUI.FadeHide(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
+            await UniTask.WhenAll(a, b, c, d);
         }
 
         public async UniTask LevelFailedAnimation()
@@ -127,11 +167,13 @@ namespace LGShuttle.UI
         private void OnDisable()
         {
             LevelManager.LevelPrepared -= OnLevelPrepared;
-            LevelManager.GameStarted -= OnGameStarted;
+            LevelManager.LevelStarted -= OnLevelStarted;
             LevelManager.LGDeath -= OnLGDeath;
-            LevelManager.GameEnded -= OnGameEnded;
-            restartUI.ConfirmedRestart -= SendRestartRequest;
-            levelCompleteUI.ContinueButton.onClick.RemoveListener(ContinueToNextLevel);
+            LevelManager.LevelEnded -= OnLevelEnded;
+            restartUI.Confirmed -= SendRestartRequest;
+            escToMenuUI.Confirmed -= SendAbandonRequest;
+            levelCompleteUI.ContinueButton.onClick.RemoveListener(LevelCompleteUIButtonHandler);
+            gameOverUI.MainMenuButton.onClick.RemoveListener(GameOverUIButtonHandler);
         }
     }
 }
