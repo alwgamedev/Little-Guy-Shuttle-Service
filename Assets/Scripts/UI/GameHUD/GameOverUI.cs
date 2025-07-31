@@ -1,5 +1,7 @@
-﻿using LGShuttle.Game;
+﻿using Cysharp.Threading.Tasks;
+using LGShuttle.Game;
 using LGShuttle.SceneManagement;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,11 +10,13 @@ namespace LGShuttle.UI
 {
     public class GameOverUI : HidableUI
     {
+        [SerializeField] HidableUI container;
         [SerializeField] TextMeshProUGUI statsBody;
         [SerializeField] TextMeshProUGUI score;
         [SerializeField] Image[] stars;
         [SerializeField] Button mainMenuButton;
 
+        public HidableUI Container => container;
         public Button MainMenuButton => mainMenuButton;
 
         public void DisplayStats(CumulativeStats stats)

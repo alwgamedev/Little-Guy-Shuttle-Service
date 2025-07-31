@@ -13,6 +13,7 @@ namespace LGShuttle.UI
         [SerializeField] HidableUI levelFailedText;
         [SerializeField] HoldForActionUI restartUI;
         [SerializeField] HoldForActionUI escToMenuUI;
+        //[SerializeField] HidableUI controlsText;
 
         LevelTimerUI timer;
         SurvivalCounter survivalCounter;
@@ -63,6 +64,7 @@ namespace LGShuttle.UI
         private async void OnLevelPrepared(ILevelManager levelManager)
         {
             UpdateUI(levelManager);
+            await MiscTools.DelayGameTime(SceneLoader.sceneFadeTime, GlobalGameTools.Instance.CTS.Token);
             await FadeInPrimaryUI();
         }
 
@@ -97,7 +99,7 @@ namespace LGShuttle.UI
                     break;
                 case LevelCompletionResult.quit:
                     await FadeOutPrimaryUI();
-                    ShowGameOverUI();
+                    await ShowGameOverUI();
                     break;
             }
         }
@@ -114,29 +116,31 @@ namespace LGShuttle.UI
 
         private async void LevelCompleteUIButtonHandler()
         {
-            levelCompleteUI.Hide();
             var next = await SceneLoader.LoadNextLevel();
             if (!next)
             {
-                ShowGameOverUI();
+                await ShowGameOverUI();
             }
+            levelCompleteUI.Hide();
         }
 
         private async void GameOverUIButtonHandler()
         {
             async UniTask a()
             {
-                await MiscTools.DelayGameTime(SceneLoader.sceneFadeTime, GlobalGameTools.Instance.CTS.Token);
+                await MiscTools.DelayGameTime(0.99f * SceneLoader.sceneFadeTime, GlobalGameTools.Instance.CTS.Token);
+                gameOverUI.Container.Hide();//so that it's hidden for next time, because we used ignore parent groups
                 gameOverUI.Hide();
             }
             var b = SceneLoader.LoadMainMenu();
             await UniTask.WhenAll(a(), b);
         }
 
-        private void ShowGameOverUI()
+        private async UniTask ShowGameOverUI()
         {
             gameOverUI.DisplayStats(lastStatsSent);
-            gameOverUI.Show();
+            await gameOverUI.FadeShow(uiFadeTime / 2, GlobalGameTools.Instance.CTS.Token);
+            await gameOverUI.Container.FadeShow(uiFadeTime / 4, GlobalGameTools.Instance.CTS.Token);
         }
 
         private async UniTask FadeInPrimaryUI()
@@ -145,15 +149,17 @@ namespace LGShuttle.UI
             var b = survivalCounter.FadeShow(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
             var c = restartUI.FadeShow(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
             var d = escToMenuUI.FadeShow(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
+            //var e = controlsText.FadeShow(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
             await UniTask.WhenAll(a, b, c, d);
         }
 
         private async UniTask FadeOutPrimaryUI()
         {
-            var a = timer.FadeHide(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
-            var b = survivalCounter.FadeHide(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
-            var c = restartUI.FadeHide(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
-            var d = escToMenuUI.FadeHide(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
+            var a = timer.FadeHide(uiFadeTime / 2, GlobalGameTools.Instance.CTS.Token);
+            var b = survivalCounter.FadeHide(uiFadeTime / 2, GlobalGameTools.Instance.CTS.Token);
+            var c = restartUI.FadeHide(uiFadeTime / 2, GlobalGameTools.Instance.CTS.Token);
+            var d = escToMenuUI.FadeHide(uiFadeTime / 2, GlobalGameTools.Instance.CTS.Token);
+            //var e = controlsText.FadeHide(uiFadeTime / 2, GlobalGameTools.Instance.CTS.Token);
             await UniTask.WhenAll(a, b, c, d);
         }
 

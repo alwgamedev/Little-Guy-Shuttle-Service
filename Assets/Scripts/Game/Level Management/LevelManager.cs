@@ -65,6 +65,7 @@ namespace LGShuttle.Game
             GameHUD.RequestQuit += HandleQuitRequest;
             LevelParamsMessenger.SendLevelParams += ReceiveLevelParams;
             FinishLine.FinishLineTriggered += OnFinishLineCrossed;
+            SceneLoader.ReturnedToMainMenu += ResetCumulativeStats;
         }
 
         public void ResetCumulativeStats()
@@ -217,8 +218,10 @@ namespace LGShuttle.Game
         {
             timer.TimedOut -= TimeOutHandler;
             GameHUD.RequestRestart -= HandleRestartRequest;
+            GameHUD.RequestQuit += HandleQuitRequest;
             LevelParamsMessenger.SendLevelParams -= ReceiveLevelParams;
             FinishLine.FinishLineTriggered -= OnFinishLineCrossed;
+            SceneLoader.ReturnedToMainMenu -= ResetCumulativeStats;
         }
 
         private void OnDestroy()

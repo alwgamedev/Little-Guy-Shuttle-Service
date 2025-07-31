@@ -28,8 +28,6 @@ namespace LGShuttle.UI
             CanvasGroup = GetComponent<CanvasGroup>();
         }
 
-        //This isn't actually a great idea -- if other scripts (e.g. on child game objects)
-        //are subscribed to OnShow, then they might not have done Awake/Enable yet when Show is called
         protected virtual void OnEnable()
         {
             if (useShowOnEnable)
@@ -51,7 +49,6 @@ namespace LGShuttle.UI
             CanvasGroup.interactable = interactableWhenShown;
             CanvasGroup.blocksRaycasts = blockRaycastsWhenShown;
             Visible = true;
-            //OnShow?.Invoke();
         }
 
         public virtual void Hide()
@@ -60,7 +57,6 @@ namespace LGShuttle.UI
             CanvasGroup.interactable = false;
             CanvasGroup.blocksRaycasts = false;
             Visible = false;
-            //OnHide?.Invoke();
         }
 
         public async UniTask FadeShow(float time, CancellationToken token)

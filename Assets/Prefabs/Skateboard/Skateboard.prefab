@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8825501302532279981}
   m_Layer: 6
   m_Name: Board  Sprite
-  m_TagString: Untagged
+  m_TagString: Skateboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -843,7 +843,7 @@ GameObject:
   - component: {fileID: 3674164428507665520}
   m_Layer: 6
   m_Name: Board
-  m_TagString: Untagged
+  m_TagString: Skateboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

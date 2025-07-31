@@ -3,6 +3,7 @@ using LGShuttle.UI;
 using UnityEngine.SceneManagement;
 using LGShuttle.Game;
 using System.Threading.Tasks;
+using System;
 
 namespace LGShuttle.SceneManagement
 {
@@ -13,6 +14,8 @@ namespace LGShuttle.SceneManagement
 
         public static int NumLevels => SceneManager.sceneCountInBuildSettings - 1;
 
+        public static event Action ReturnedToMainMenu;
+
         public static async UniTask ReloadScene()
         {
             await LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -21,6 +24,7 @@ namespace LGShuttle.SceneManagement
         public static async UniTask LoadMainMenu()
         {
             await LoadScene(0);
+            ReturnedToMainMenu?.Invoke();
         }
 
         public static async UniTask<bool> LoadNextLevel()
@@ -63,7 +67,7 @@ namespace LGShuttle.SceneManagement
 
             ao.allowSceneActivation = true;
 
-            await sceneFader.FadeHide(sceneFadeTime, GlobalGameTools.Instance.CTS.Token);
+            //await sceneFader.FadeHide(sceneFadeTime, GlobalGameTools.Instance.CTS.Token);
         }
     }
 }
