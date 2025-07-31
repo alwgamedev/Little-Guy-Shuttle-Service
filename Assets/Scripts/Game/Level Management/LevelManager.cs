@@ -61,6 +61,7 @@ namespace LGShuttle.Game
         private void OnEnable()
         {
             timer.TimedOut += TimeOutHandler;
+            GameHUD.RequestStart += StartLevel;
             GameHUD.RequestRestart += HandleRestartRequest;
             GameHUD.RequestQuit += HandleQuitRequest;
             LevelParamsMessenger.SendLevelParams += ReceiveLevelParams;
@@ -76,7 +77,7 @@ namespace LGShuttle.Game
         private void ReceiveLevelParams(LevelParams levelParams)
         {
             PrepareLevel(levelParams);
-            StartLevel();
+            //StartLevel();
         }
 
         public void PrepareLevel(LevelParams levelParams)
@@ -217,8 +218,9 @@ namespace LGShuttle.Game
         private void OnDisable()
         {
             timer.TimedOut -= TimeOutHandler;
+            GameHUD.RequestStart -= StartLevel;
             GameHUD.RequestRestart -= HandleRestartRequest;
-            GameHUD.RequestQuit += HandleQuitRequest;
+            GameHUD.RequestQuit -= HandleQuitRequest;
             LevelParamsMessenger.SendLevelParams -= ReceiveLevelParams;
             FinishLine.FinishLineTriggered -= OnFinishLineCrossed;
             SceneLoader.ReturnedToMainMenu -= ResetCumulativeStats;

@@ -3,7 +3,11 @@ using LGShuttle.Core;
 using LGShuttle.Game;
 using LGShuttle.SceneManagement;
 using System;
+using System.Threading;
+using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace LGShuttle.UI
 {
@@ -13,20 +17,27 @@ namespace LGShuttle.UI
         [SerializeField] HidableUI levelFailedText;
         [SerializeField] HoldForActionUI restartUI;
         [SerializeField] HoldForActionUI escToMenuUI;
+        [SerializeField] HidableUI goAnim;
+        [SerializeField] float goAnimFrameLength;
+        [SerializeField] Color goAnimPrimaryColor;
+        [SerializeField] Color goAnimSecondaryColor;
         //[SerializeField] HidableUI controlsText;
 
+        TextMeshProUGUI goText;
         LevelTimerUI timer;
         SurvivalCounter survivalCounter;
         LevelCompleteUI levelCompleteUI;
         GameOverUI gameOverUI;
         CumulativeStats lastStatsSent;
 
+        public static event Action RequestStart;
         public static event Action RequestRestart;
         public static event Action RequestQuit;
         //public static event Action RequestNextLevel;
 
         private void Awake()
         {
+            goText = goAnim.GetComponent<TextMeshProUGUI>();
             timer = GetComponentInChildren<LevelTimerUI>();
             survivalCounter = GetComponentInChildren<SurvivalCounter>();
             levelCompleteUI = GetComponentInChildren<LevelCompleteUI>();
@@ -36,7 +47,7 @@ namespace LGShuttle.UI
         private void OnEnable()
         {
             LevelManager.LevelPrepared += OnLevelPrepared;
-            LevelManager.LevelStarted += OnLevelStarted;
+            //LevelManager.LevelStarted += OnLevelStarted;
             LevelManager.LGDeath += OnLGDeath;
             LevelManager.LevelEnded += OnLevelEnded;
             restartUI.Confirmed += SendRestartRequest;
@@ -64,14 +75,23 @@ namespace LGShuttle.UI
         private async void OnLevelPrepared(ILevelManager levelManager)
         {
             UpdateUI(levelManager);
-            await MiscTools.DelayGameTime(SceneLoader.sceneFadeTime, GlobalGameTools.Instance.CTS.Token);
-            await FadeInPrimaryUI();
+
+            async UniTask a()
+            {
+                await MiscTools.DelayGameTime(SceneLoader.sceneFadeTime, GlobalGameTools.Instance.CTS.Token);
+                await FadeInPrimaryUI(GlobalGameTools.Instance.CTS.Token);
+            }
+
+            var b = GoAnimationAndStart(goAnimFrameLength, GlobalGameTools.Instance.CTS.Token);
+
+            await UniTask.WhenAll(a(), b);
+
         }
 
-        private void OnLevelStarted(ILevelManager levelManager)
-        {
-            //e.g. "GO!" animation
-        }
+        //private async void OnLevelStarted(ILevelManager levelManager)
+        //{
+            
+        //}
 
         private void OnLGDeath(ILevelManager levelManager)
         {
@@ -87,19 +107,19 @@ namespace LGShuttle.UI
                 case LevelCompletionResult.passed:
                     levelCompleteUI.UpdateUI(levelManager);
                     levelCompleteUI.Show();
-                    await FadeOutPrimaryUI();
+                    await FadeOutPrimaryUI(GlobalGameTools.Instance.CTS.Token);
                     break;
                 case LevelCompletionResult.failed:
-                    var a = LevelFailedAnimation();
-                    var b = FadeOutPrimaryUI();
+                    var a = LevelFailedAnimation(GlobalGameTools.Instance.CTS.Token);
+                    var b = FadeOutPrimaryUI(GlobalGameTools.Instance.CTS.Token);
                     await UniTask.WhenAll(a, b);
                     break;
                 case LevelCompletionResult.restart:
-                    await FadeOutPrimaryUI();
+                    await FadeOutPrimaryUI(GlobalGameTools.Instance.CTS.Token);
                     break;
                 case LevelCompletionResult.quit:
-                    await FadeOutPrimaryUI();
-                    await ShowGameOverUI();
+                    await FadeOutPrimaryUI(GlobalGameTools.Instance.CTS.Token);
+                    await ShowGameOverUI(GlobalGameTools.Instance.CTS.Token);
                     break;
             }
         }
@@ -119,7 +139,7 @@ namespace LGShuttle.UI
             var next = await SceneLoader.LoadNextLevel();
             if (!next)
             {
-                await ShowGameOverUI();
+                await ShowGameOverUI(GlobalGameTools.Instance.CTS.Token);
             }
             levelCompleteUI.Hide();
         }
@@ -136,44 +156,85 @@ namespace LGShuttle.UI
             await UniTask.WhenAll(a(), b);
         }
 
-        private async UniTask ShowGameOverUI()
+        private async UniTask ShowGameOverUI(CancellationToken token)
         {
             gameOverUI.DisplayStats(lastStatsSent);
-            await gameOverUI.FadeShow(uiFadeTime / 2, GlobalGameTools.Instance.CTS.Token);
-            await gameOverUI.Container.FadeShow(uiFadeTime / 4, GlobalGameTools.Instance.CTS.Token);
+            await gameOverUI.FadeShow(uiFadeTime / 2, token);
+            await gameOverUI.Container.FadeShow(uiFadeTime / 4, token);
         }
 
-        private async UniTask FadeInPrimaryUI()
+        private async UniTask FadeInPrimaryUI(CancellationToken token)
         {
-            var a = timer.FadeShow(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
-            var b = survivalCounter.FadeShow(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
-            var c = restartUI.FadeShow(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
-            var d = escToMenuUI.FadeShow(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
+            var a = timer.FadeShow(uiFadeTime, token);
+            var b = survivalCounter.FadeShow(uiFadeTime, token);
+            var c = restartUI.FadeShow(uiFadeTime, token);
+            var d = escToMenuUI.FadeShow(uiFadeTime, token);
             //var e = controlsText.FadeShow(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
             await UniTask.WhenAll(a, b, c, d);
         }
 
-        private async UniTask FadeOutPrimaryUI()
+        private async UniTask FadeOutPrimaryUI(CancellationToken token)
         {
-            var a = timer.FadeHide(uiFadeTime / 2, GlobalGameTools.Instance.CTS.Token);
-            var b = survivalCounter.FadeHide(uiFadeTime / 2, GlobalGameTools.Instance.CTS.Token);
-            var c = restartUI.FadeHide(uiFadeTime / 2, GlobalGameTools.Instance.CTS.Token);
-            var d = escToMenuUI.FadeHide(uiFadeTime / 2, GlobalGameTools.Instance.CTS.Token);
+            var a = timer.FadeHide(uiFadeTime / 2, token);
+            var b = survivalCounter.FadeHide(uiFadeTime / 2, token);
+            var c = restartUI.FadeHide(uiFadeTime / 2, token);
+            var d = escToMenuUI.FadeHide(uiFadeTime / 2, token);
             //var e = controlsText.FadeHide(uiFadeTime / 2, GlobalGameTools.Instance.CTS.Token);
             await UniTask.WhenAll(a, b, c, d);
         }
 
-        public async UniTask LevelFailedAnimation()
+        private async UniTask GoAnimationAndStart(float frameTime, CancellationToken token)
         {
-            await levelFailedText.FadeShow(uiFadeTime / 3, GlobalGameTools.Instance.CTS.Token);
-            await MiscTools.DelayGameTime(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
-            await levelFailedText.FadeHide(uiFadeTime / 3, GlobalGameTools.Instance.CTS.Token);
+            await UniTask.WhenAll(goAnim.FadeShow(frameTime, token),
+                GoAnimation(frameTime, GlobalGameTools.Instance.CTS.Token));
+            RequestStart?.Invoke();
+            await MiscTools.DelayGameTime(3 * frameTime, GlobalGameTools.Instance.CTS.Token);
+            await goAnim.FadeHide(3 * frameTime, GlobalGameTools.Instance.CTS.Token);
+        }
+
+        private async UniTask GoAnimation(float frameTime, CancellationToken token)
+        {
+            goAnim.Show();
+            goText.color = goAnimPrimaryColor;
+            for (int i = 0; i < 12; i++)
+            {
+                goText.text = GoText(i);
+                await MiscTools.DelayGameTime(frameTime, token);
+            }
+
+            goText.text = "GO!";
+            goText.color = goAnimSecondaryColor;
+        }
+
+        private string GoText(int frame)
+        {
+            if (frame >= 12)
+            {
+                return "GO!";
+            }
+
+            int q = 3 - (frame / 4);
+            int r = frame % 4;
+            var s = q.ToString();
+            for (int i = 0; i < r; i++)
+            {
+                s += ".";
+            }
+
+            return s;
+        }
+
+        private async UniTask LevelFailedAnimation(CancellationToken token)
+        {
+            await levelFailedText.FadeShow(uiFadeTime / 3, token);
+            await MiscTools.DelayGameTime(uiFadeTime, token);
+            await levelFailedText.FadeHide(uiFadeTime / 3, token);
         }
 
         private void OnDisable()
         {
             LevelManager.LevelPrepared -= OnLevelPrepared;
-            LevelManager.LevelStarted -= OnLevelStarted;
+            //LevelManager.LevelStarted -= OnLevelStarted;
             LevelManager.LGDeath -= OnLGDeath;
             LevelManager.LevelEnded -= OnLevelEnded;
             restartUI.Confirmed -= SendRestartRequest;
