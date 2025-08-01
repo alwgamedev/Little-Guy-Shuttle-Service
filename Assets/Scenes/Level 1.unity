@@ -8651,7 +8651,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1087771754639493146, guid: 56a6e7aeeb4aac2428b7e44199f87275, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.22708519
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1087771754639493146, guid: 56a6e7aeeb4aac2428b7e44199f87275, type: 3}
       propertyPath: m_LocalRotation.w
@@ -27070,7 +27070,7 @@ MonoBehaviour:
     lgToSpawn: 25
     timeLimit: 60
     completionBonus: 400
-    survivalRate: 0.1
+    survivalRate: 0.25
 --- !u!4 &1114269663
 Transform:
   m_ObjectHideFlags: 0
@@ -27300,7 +27300,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1087771754639493146, guid: 56a6e7aeeb4aac2428b7e44199f87275, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.22708519
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1087771754639493146, guid: 56a6e7aeeb4aac2428b7e44199f87275, type: 3}
       propertyPath: m_LocalRotation.w
