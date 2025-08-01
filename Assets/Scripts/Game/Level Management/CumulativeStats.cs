@@ -48,8 +48,7 @@ namespace LGShuttle.Game
                 {
                     return 5;
                 }
-
-                return TotalStars / (float)(5 * LevelsCompleted);
+                return TotalStars / (float)SceneLoader.NumLevels;
             }
         }
 
