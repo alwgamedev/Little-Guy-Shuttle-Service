@@ -1,4 +1,6 @@
-﻿namespace LGShuttle.Game
+﻿using LGShuttle.SceneManagement;
+
+namespace LGShuttle.Game
 {
     public struct CumulativeStats
     {
@@ -17,12 +19,10 @@
         {
             get
             {
-                if (LevelsCompleted == 0)
-                {
-                    return 0;
-                }
-
-                return TotalAttempts / (float)LevelsCompleted;
+                //if ended game without completing all levels, then we should include last attempted level
+                //in the denominator
+                float l = LevelsCompleted < SceneLoader.NumLevels ? LevelsCompleted + 1 : LevelsCompleted;
+                return TotalAttempts / l;
             }
         }
 

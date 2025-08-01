@@ -84,6 +84,7 @@ namespace LGShuttle.Game
             levelState.spawned = spawned.Length;
             levelState.remaining = spawned.Length;
             SubscribeDeathHandlers();
+            SkateboardMover.TotalLGMass = spawned[0].Mover.Rigidbody.mass * spawned.Length;
             LevelPrepared?.Invoke(this);
         }
 
@@ -172,6 +173,7 @@ namespace LGShuttle.Game
             if (!lg) return;
 
             levelState.remaining--;
+            SkateboardMover.TotalLGMass -= lg.Rigidbody.mass;
             lg.Death -= LGDeathHandler;
 
             LGDeath?.Invoke(this);

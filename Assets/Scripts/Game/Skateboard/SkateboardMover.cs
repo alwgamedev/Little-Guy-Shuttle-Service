@@ -10,6 +10,7 @@ namespace LGShuttle.Game
         [SerializeField] Collider2D backWheel;
         [SerializeField] float acceleration;
         [SerializeField] float torque;
+        [SerializeField] float wheelTorque;
         [SerializeField] float moveSpeed;
         [SerializeField] float jumpCooldown;
         [SerializeField] float jumpImpulseForce;
@@ -26,9 +27,12 @@ namespace LGShuttle.Game
         float jumpCooldownTimer;
 
         bool Grounded => frontWheel.IsTouchingLayers(GlobalGameTools.Instance.GroundLayer)
-            || backWheel.IsTouchingLayers(GlobalGameTools.Instance.GroundLayer);
+            || backWheel.IsTouchingLayers(GlobalGameTools.Instance.GroundLayer)
+            || Board.IsTouchingLayers(GlobalGameTools.Instance.GroundLayer);
+        float TotalMass => Board.mass + frontWheel.attachedRigidbody.mass
+            + backWheel.attachedRigidbody.mass + TotalLGMass;
 
-
+        public static float TotalLGMass { get; set; }
         public static Rigidbody2D Board { get; private set; }
         public static RandomizableVector2 RandomBoardAnchorPosition { get; private set; }
         public static Vector2 RandomBoardAnchorLocalPosition 
@@ -68,7 +72,7 @@ namespace LGShuttle.Game
         {
             if (moveInput != 0)
             {
-                Accelerate(moveInput, moveSpeed, acceleration);
+                Accelerate(moveInput, moveSpeed, acceleration, wheelTorque);
             }
 
             if (rotateInput != 0)
@@ -80,10 +84,12 @@ namespace LGShuttle.Game
             {
                 JumpImpulse();
                 awaitingLanding = true;
+                jumpCooldownTimer = jumpCooldown;
                 jumpInput = 2;
             }
             else if (jumpInput == 2)
             {
+                
                 JumpHold();
                 if (jumpCooldownTimer <= 0 && board.linearVelocityY < jumpHoldMinUpwardVelocity)
                     //otherwise holding jump slows the fall and looks unnatural
@@ -111,34 +117,40 @@ namespace LGShuttle.Game
             }
         }
 
-        private void Accelerate(int direction, float goalSpeed, float acceleration)
+        private void Accelerate(int direction, float goalSpeed, float acceleration, float wheelTorque)
         {
-            var s = Vector2.Dot(Board.linearVelocity, direction * Board.transform.right);
-            var f = (goalSpeed - s) * acceleration * Board.mass * direction * Board.transform.right;
+            var u = Grounded ? board.transform.right : Vector3.right;
+            //^otherwise you can rotate the board to a steep angle and fly through the air
+            var s = Vector2.Dot(Board.linearVelocity, direction * u);
+            var f = (goalSpeed - s) * acceleration * TotalMass * direction * u;
             Board.AddForce(f);
+            var t = (s - goalSpeed) * wheelTorque * TotalMass * direction;
+            frontWheel.attachedRigidbody.AddTorque(t);
+            backWheel.attachedRigidbody.AddTorque(t);
+            //driving the wheels helps when a wheel gets stuck on a ledge
+            //but also need to drive the board, so that you can still move while midair
         }
 
         private void Rotate(int direction, float torque)
         {
-            board.AddTorque(-direction * torque * board.mass);
+            board.AddTorque(-direction * torque * TotalMass);
         }
 
         private bool CanJump()
         {
-            return jumpCooldownTimer <= 0 && !awaitingLanding;
+            return jumpInput == 0 && jumpCooldownTimer <= 0 && !awaitingLanding;
             //so you WILL be allowed to jump mid-air, but once you jump you have to hit ground 
             //before you can jump again
         }
 
         private void JumpImpulse()
         {
-            board.AddForce(jumpImpulseForce * board.mass * Vector2.up, ForceMode2D.Impulse);
-            jumpCooldownTimer = jumpCooldown;
+            board.AddForce(jumpImpulseForce * TotalMass * Vector2.up, ForceMode2D.Impulse);
         }
 
         private void JumpHold()
         {
-            board.AddForce(jumpHoldForce * board.mass * Vector2.up);
+            board.AddForce(jumpHoldForce * TotalMass * Vector2.up);
         }
 
         private void OnLevelStarted(ILevelManager lm)

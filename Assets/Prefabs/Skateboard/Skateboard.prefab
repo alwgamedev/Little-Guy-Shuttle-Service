@@ -340,7 +340,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 1.75
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
@@ -405,13 +405,14 @@ MonoBehaviour:
   board: {fileID: 2423346466729361443}
   frontWheel: {fileID: 1232362380311639821}
   backWheel: {fileID: 8044994112398815668}
-  acceleration: 1
-  torque: 10
+  acceleration: 0.5
+  torque: 20
+  wheelTorque: 0.15
   moveSpeed: 25
   jumpCooldown: 0.25
-  jumpImpulseForce: 8
-  jumpHoldForce: 4.75
-  jumpHoldMinUpwardVelocity: 4
+  jumpImpulseForce: 7
+  jumpHoldForce: 6.25
+  jumpHoldMinUpwardVelocity: 3
   randomBoardAnchorPosition:
     mode: 0
     boundsSource: 0
@@ -881,7 +882,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 50
-  m_LinearDamping: 0.05
+  m_LinearDamping: 0.25
   m_AngularDamping: 1
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: 64560883bd07114419171a9c34d7b02b, type: 2}
@@ -1115,7 +1116,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 1.75
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
