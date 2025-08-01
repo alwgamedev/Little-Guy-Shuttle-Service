@@ -201,8 +201,8 @@ MonoBehaviour:
   escToMenuUI: {fileID: 5946212896932200411}
   goAnim: {fileID: 3741013967177074406}
   goAnimFrameLength: 0.25
-  goAnimPrimaryColor: {r: 0.9411765, g: 0.6658635, b: 0.09019605, a: 1}
-  goAnimSecondaryColor: {r: 0.034813687, g: 0.7207546, b: 0.03127795, a: 1}
+  goAnimPrimaryColor: {r: 1, g: 0.79137665, b: 0, a: 1}
+  goAnimSecondaryColor: {r: 0.10886583, g: 1, b: 0.103773475, a: 1}
 --- !u!1 &488765140777641873
 GameObject:
   m_ObjectHideFlags: 0
