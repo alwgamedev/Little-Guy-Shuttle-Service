@@ -10017,9 +10017,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelParams:
-    lgToSpawn: 95
+    lgToSpawn: 99
     timeLimit: 120
-    completionBonus: 400
+    completionBonus: 600
 --- !u!4 &1114269663
 Transform:
   m_ObjectHideFlags: 0

@@ -23,7 +23,7 @@ namespace LGShuttle.UI
             numerator.text = s.remaining.ToString();
             denominator.text = s.spawned.ToString();
             //passCaption.text = $"PASS: {(int)(p.survivalRate * 100)}%";
-            rateCaption.text = $"SURVIVAL RATE: {(int)(s.SurvivalRate * 100)}%";
+            rateCaption.text = $"SURVIVAL: {(int)(s.SurvivalRate * 100)}%";
             if (animateDeath)
             {
                 deathAnim.Play();

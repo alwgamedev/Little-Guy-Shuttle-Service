@@ -2991,8 +2991,8 @@ MonoBehaviour:
   interactableWhenShown: 0
   blockRaycastsWhenShown: 0
   actionName: quit
-  keyName: esc
-  keyCode: 27
+  keyName: tab
+  keyCode: 9
   tmp: {fileID: 4326712266772626497}
   confirmTime: 3
 --- !u!1 &6023456179650882086
