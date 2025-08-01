@@ -1379,7 +1379,7 @@ GameObject:
   - component: {fileID: 8650788777036236269}
   - component: {fileID: 8031287493006019268}
   m_Layer: 5
-  m_Name: Pass Caption
+  m_Name: Rate Caption
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1432,7 +1432,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'PASS: 50%'
+  m_text: 'SURVIVAL RATE: 50%'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
@@ -2658,7 +2658,7 @@ MonoBehaviour:
   blockRaycastsWhenShown: 0
   numerator: {fileID: 436589555044872626}
   denominator: {fileID: 6861564379104649410}
-  passCaption: {fileID: 8031287493006019268}
+  rateCaption: {fileID: 8031287493006019268}
 --- !u!111 &5793074138923395922
 Animation:
   m_ObjectHideFlags: 0

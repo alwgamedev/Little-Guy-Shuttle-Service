@@ -29,7 +29,7 @@
             survivalPercent = (int)(sr * 100);
             survivalBonus = levelManager.LevelParams.SurvivalRateBonus(sr);
             totalScore = completionBonus + timeBonus + survivalBonus;
-            starRating = levelManager.LevelParams.StarRating(totalScore);
+            starRating = levelManager.LevelParams.StarRating(levelManager);
         }
     }
 }

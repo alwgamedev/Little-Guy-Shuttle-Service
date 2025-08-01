@@ -406,13 +406,13 @@ MonoBehaviour:
   frontWheel: {fileID: 1232362380311639821}
   backWheel: {fileID: 8044994112398815668}
   acceleration: 0.5
-  torque: 20
+  torque: 22
   wheelTorque: 0.15
   moveSpeed: 25
   jumpCooldown: 0.25
-  jumpImpulseForce: 7
+  jumpImpulseForce: 8
   jumpHoldForce: 6.25
-  jumpHoldMinUpwardVelocity: 3
+  jumpHoldMinUpwardVelocity: 2.75
   randomBoardAnchorPosition:
     mode: 0
     boundsSource: 0

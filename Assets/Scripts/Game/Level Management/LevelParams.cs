@@ -10,7 +10,7 @@ namespace LGShuttle.Game
         public int lgToSpawn;
         public int timeLimit;
         public int completionBonus;
-        [Range(0, 1)] public float survivalRate;
+        //[Range(0, 1)] public float survivalRate;
 
         public int AdjustedCompletionBonus(int attempts)
         {
@@ -30,12 +30,22 @@ namespace LGShuttle.Game
 
         public int SurvivalRateBonus(float survivalRate)
         {
-            return (int)((survivalRate - this.survivalRate) * 900);//9 points per percentage point over required
+            return (int)(survivalRate * 400);//4 points per percentage point 
         }
 
-        public int StarRating(int score)
+        //1 star min
+        //0-2 stars for time
+        //0-2 stars for survival
+        //max 5 stars
+        public int StarRating(ILevelManager lm)
         {
-            return MiscTools.rng.Next(5) + 1;//just for testing for now
+            float total = 1;
+            var timeF = lm.Timer.FractionTimeRemaining;
+            var survivalF = lm.LevelState.SurvivalRate;
+
+            timeF = Mathf.Clamp(timeF / .375f, 0, 2);
+            survivalF = Mathf.Clamp(survivalF / .2f, 0, 2);
+            return (int)(total + timeF + survivalF);
         }
     }
 }

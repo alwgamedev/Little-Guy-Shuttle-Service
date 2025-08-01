@@ -18,6 +18,17 @@ namespace LGShuttle.Game
                 UICanvas.Instance.GameHUD.UpdateTimer(this);
             }
         }
+        public float FractionTimeRemaining
+        {
+            get
+            {
+                if (TimeLimit == 0)
+                {
+                    return 1;
+                }
+                return TimeRemaining / TimeLimit;
+            }
+        }
         public bool Running { get; private set; }   
 
         public event Action TimedOut;

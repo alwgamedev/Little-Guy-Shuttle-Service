@@ -97,6 +97,8 @@ namespace LGShuttle.Game
 
         public async UniTask EndLevel(LevelCompletionResult result)
         {
+            if (!levelState.gameRunning) return;
+
             timer.StopTimer();
             levelState.gameRunning = false;
             levelState.attempts++;
@@ -107,18 +109,17 @@ namespace LGShuttle.Game
                 levelState.CalculateStats(this);
                 cumulativeStats.OnLevelPassed(levelState.Stats);
                 levelState.attempts = 0;
+                LevelEnded?.Invoke(this);
             }
             else
             {
                 cumulativeStats.OnLevelFailed(this);
-            }
-
-            LevelEnded?.Invoke(this);
-
-            if (result == LevelCompletionResult.failed || result == LevelCompletionResult.restart)
-            {
-                await MiscTools.DelayGameTime(1, GlobalGameTools.Instance.CTS.Token);
-                await SceneLoader.ReloadScene();
+                LevelEnded?.Invoke(this);
+                if (result != LevelCompletionResult.quit)
+                {
+                    await MiscTools.DelayGameTime(1, GlobalGameTools.Instance.CTS.Token);
+                    await SceneLoader.ReloadScene();
+                }
             }
         }
 
@@ -178,7 +179,7 @@ namespace LGShuttle.Game
 
             LGDeath?.Invoke(this);
 
-            if (levelState.gameRunning && levelState.SurvivalRate < levelParams.survivalRate)
+            if (levelState.gameRunning && levelState.remaining == 0)
             {
                 //FailLevel();
                 await EndLevel(LevelCompletionResult.failed);
