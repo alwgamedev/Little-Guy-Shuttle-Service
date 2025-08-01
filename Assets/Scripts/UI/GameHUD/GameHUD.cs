@@ -183,8 +183,8 @@ namespace LGShuttle.UI
 
         private async UniTask GoAnimationAndStart(float frameTime, CancellationToken token)
         {
-            await UniTask.WhenAll(goAnim.FadeShow(frameTime, token),
-                GoAnimation(frameTime, GlobalGameTools.Instance.CTS.Token));
+            await MiscTools.DelayGameTime(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
+            await GoAnimation(frameTime, GlobalGameTools.Instance.CTS.Token);
             RequestStart?.Invoke();
             await MiscTools.DelayGameTime(3 * frameTime, GlobalGameTools.Instance.CTS.Token);
             await goAnim.FadeHide(3 * frameTime, GlobalGameTools.Instance.CTS.Token);

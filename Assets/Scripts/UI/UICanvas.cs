@@ -10,6 +10,8 @@ namespace LGShuttle.UI
         [SerializeField] HidableUI sceneFader;
         [SerializeField] float sceneFadeTime = .25f;
 
+        Canvas canvas;
+
         public StartMenu StartMenu { get; private set; }
         public GameHUD GameHUD { get; private set; }
 
@@ -21,6 +23,7 @@ namespace LGShuttle.UI
             Instance = this;
             StartMenu = GetComponentInChildren<StartMenu>();
             GameHUD = GetComponentInChildren<GameHUD>();
+            canvas = GetComponent<Canvas>();
             SceneLoader.sceneFader = sceneFader;
             SceneLoader.sceneFadeTime = sceneFadeTime;
         }
@@ -32,6 +35,7 @@ namespace LGShuttle.UI
 
         private async void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            canvas.worldCamera = Camera.main;
             var isStartMenu = SceneManager.GetActiveScene().buildIndex == 0;
             StartMenu.gameObject.SetActive(isStartMenu);
             GameHUD.gameObject.SetActive(!isStartMenu);
