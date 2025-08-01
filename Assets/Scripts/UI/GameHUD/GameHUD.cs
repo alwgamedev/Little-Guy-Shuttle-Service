@@ -5,9 +5,7 @@ using LGShuttle.SceneManagement;
 using System;
 using System.Threading;
 using TMPro;
-using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace LGShuttle.UI
 {
@@ -202,8 +200,8 @@ namespace LGShuttle.UI
                 await MiscTools.DelayGameTime(frameTime, token);
             }
 
-            goText.text = "GO!";
             goText.color = goAnimSecondaryColor;
+            goText.text = "GO!";
         }
 
         private string GoText(int frame)

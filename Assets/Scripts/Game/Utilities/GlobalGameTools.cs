@@ -8,6 +8,7 @@ namespace LGShuttle.Game
         int? littleGuyLayer;
         int? skateboardLayer;
         int? groundLayer;
+        int? sceneBoundsLayer;
 
         public static GlobalGameTools Instance { get; private set; }
 
@@ -46,6 +47,19 @@ namespace LGShuttle.Game
                 }
 
                 return groundLayer.Value;
+            }
+        }
+
+        public int SceneBoundsLayer
+        {
+            get
+            {
+                if (!sceneBoundsLayer.HasValue)
+                {
+                    sceneBoundsLayer = LayerMask.GetMask("Scene Bounds");
+                }
+
+                return sceneBoundsLayer.Value;
             }
         }
 

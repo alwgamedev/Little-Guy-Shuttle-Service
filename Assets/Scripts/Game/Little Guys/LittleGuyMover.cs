@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using UnityEngine;
 
 namespace LGShuttle.Game
@@ -83,7 +82,7 @@ namespace LGShuttle.Game
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (Dead || !gameObject) return;
+            if (!gameObject || Dead) return;
 
             var layer = 1 << collision.gameObject.layer;
             if (BalanceBroken && layer == GlobalGameTools.Instance.SkateboardLayer)
@@ -101,7 +100,18 @@ namespace LGShuttle.Game
             OnCollisionEnter2D(collision);
         }
 
-        private void Die()
+        private void OnTriggerExit2D(Collider2D collider)
+        {
+            if (!gameObject || !gameObject.activeInHierarchy || Dead) return;
+
+            var layer = 1 << collider.gameObject.layer;
+            if (layer == GlobalGameTools.Instance.SceneBoundsLayer)
+            {
+                Die();
+            }
+        }
+
+        public void Die()
         {
             Dead = true;
             Death?.Invoke(this);

@@ -14,10 +14,6 @@ namespace LGShuttle.Game
     {
         [SerializeField] LevelParams testLevelParams;
 
-        //idea for how this will work ultimately:
-        //one level manager persisting between levels that gets the level params for each level
-        //from a static class. UI will get data from LevelManager (e.g. remaining lg, timer, etc.)
-
         //RULES OF THE GAME:
         //* it's timed; if timeRemaing <= 0, you fail the level and restart
         //* if percent remaining falls below a threshold (e.g. 50%), you fail and restart

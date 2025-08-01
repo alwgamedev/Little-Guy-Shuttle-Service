@@ -1,7 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
-using LGShuttle.Game;
+﻿using LGShuttle.Game;
 using LGShuttle.SceneManagement;
-using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,8 +32,8 @@ namespace LGShuttle.UI
         {
             return $"Levels Completed: {stats.LevelsCompleted}/{SceneLoader.NumLevels}\n"
             + $"Average Attempts per Level: {stats.AverageAttemptsPerLevel:0.00}\n"
-            + $"Little Guys Transported: {stats.TotalLGTransported}\n"
-            + $"Little Guy Souls Lost: {stats.TotalLGKilled}\n"
+            + $"Little Guys Transported Successfully: {stats.TotalLGTransported}\n"
+            + $"Souls Lost in Transport: {stats.TotalLGKilled}\n"
             + $"Average Survival Rate: {stats.AverageSurvivalPercent}% (successful missions only)\n"
             + $"Completion Time: {stats.FormattedCompletionTime} (successful missions only)";
         }

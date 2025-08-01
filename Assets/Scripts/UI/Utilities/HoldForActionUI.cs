@@ -2,7 +2,6 @@
 using TMPro;
 using UnityEngine;
 using System;
-using Unity.VisualScripting;
 
 namespace LGShuttle.UI
 {

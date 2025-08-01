@@ -1,5 +1,4 @@
-﻿using LGShuttle.Core;
-using LGShuttle.Game;
+﻿using LGShuttle.Game;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

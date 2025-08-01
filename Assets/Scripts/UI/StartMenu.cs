@@ -1,6 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
-using LGShuttle.Core;
-using LGShuttle.SceneManagement;
+﻿using LGShuttle.SceneManagement;
 using LGShuttle.Game;
 using UnityEngine;
 
