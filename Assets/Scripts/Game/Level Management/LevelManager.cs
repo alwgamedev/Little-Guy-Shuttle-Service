@@ -68,6 +68,7 @@ namespace LGShuttle.Game
         public void ResetCumulativeStats()
         {
             cumulativeStats = new();
+            levelState = new();
         }
 
         private void ReceiveLevelParams(LevelParams levelParams)

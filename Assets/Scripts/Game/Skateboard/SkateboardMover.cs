@@ -145,12 +145,12 @@ namespace LGShuttle.Game
 
         private void JumpImpulse()
         {
-            board.AddForce(jumpImpulseForce * TotalMass * Vector2.up, ForceMode2D.Impulse);
+            board.AddForce(jumpImpulseForce * TotalMass * Board.transform.up, ForceMode2D.Impulse);
         }
 
         private void JumpHold()
         {
-            board.AddForce(jumpHoldForce * TotalMass * Vector2.up);
+            board.AddForce(jumpHoldForce * TotalMass * Board.transform.up);
         }
 
         private void OnLevelStarted(ILevelManager lm)

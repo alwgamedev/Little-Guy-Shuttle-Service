@@ -1,4 +1,5 @@
 ﻿using LGShuttle.SceneManagement;
+using UnityEngine;
 
 namespace LGShuttle.Game
 {
@@ -40,17 +41,7 @@ namespace LGShuttle.Game
             }
         }
 
-        public float AverageStarRating
-        {
-            get
-            {
-                if (LevelsCompleted == 0)
-                {
-                    return 5;
-                }
-                return TotalStars / (float)SceneLoader.NumLevels;
-            }
-        }
+        public float AverageStarRating => Mathf.Max(1, TotalStars / (float)SceneLoader.NumLevels);
 
         public string FormattedCompletionTime
         {

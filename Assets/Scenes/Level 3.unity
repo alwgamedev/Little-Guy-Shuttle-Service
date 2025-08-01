@@ -24008,7 +24008,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelParams:
     lgToSpawn: 30
-    timeLimit: 120
+    timeLimit: 90
     completionBonus: 400
 --- !u!4 &1114269663
 Transform:

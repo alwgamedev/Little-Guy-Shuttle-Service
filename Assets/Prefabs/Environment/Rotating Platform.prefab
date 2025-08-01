@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3825693407669789687, guid: cd8b2776a86fce34994429e1bd19d61f, type: 3}
       propertyPath: m_Name
-      value: Rotating Platform Variant
+      value: Rotating Platform
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -85,7 +85,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 150
+  m_Mass: 100
   m_LinearDamping: 0
   m_AngularDamping: 5
   m_GravityScale: 1
