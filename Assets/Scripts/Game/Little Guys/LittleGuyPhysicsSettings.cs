@@ -9,7 +9,6 @@ namespace LGShuttle.Game
     {
         [Header("Balance")]
         public float balanceStrength;
-        //[Range(0, 90)] public float balanceBreakAngle;
         public float balancedAngularDamping;
         public float fallenAngularDamping;
 

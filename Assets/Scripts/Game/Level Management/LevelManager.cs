@@ -14,14 +14,6 @@ namespace LGShuttle.Game
     {
         [SerializeField] LevelParams testLevelParams;
 
-        //RULES OF THE GAME:
-        //* it's timed; if timeRemaing <= 0, you fail the level and restart
-        //* if percent remaining falls below a threshold (e.g. 50%), you fail and restart
-        //  (note: game will generally be harder with smaller starting spawn because
-        //  you get less deaths before you fail -- but maybe we just fix the starting spawn (with little bit of random)
-        //  for simplicity
-        //* you can press R to restart the level at any time (e.g. if you get stuck)
-
         LittleGuySpawner spawner;
         LittleGuyController[] spawned;
         LevelTimer timer;
@@ -38,20 +30,11 @@ namespace LGShuttle.Game
         public static event Action<ILevelManager> LevelStarted;
         public static event Action<ILevelManager> LGDeath;
         public static event Action<ILevelManager> LevelEnded;
-        //WE'LL ADD SUCH EVENTS LATER ONCE WE KNOW HOW/IF WE ACTUALLY NEED THEM
-
-        //WE'LL PROBABLY USE THESE EVENTS FOR UI (so just static events rather than static LM)
-        //the ui will probably just be survival counter and timer
-        //maybe we just:
-        //a) configure and show hud when game starts 
-        //b) have events for level state changes during game (to update survival counter)
-        //c) hide hud when game ends
 
         private void Awake()
         {
             spawner = GetComponent<LittleGuySpawner>();
             timer = GetComponent<LevelTimer>();
-            //DontDestroyOnLoad(gameObject);
         }
 
         private void OnEnable()
@@ -60,7 +43,7 @@ namespace LGShuttle.Game
             GameHUD.RequestStart += StartLevel;
             GameHUD.RequestRestart += HandleRestartRequest;
             GameHUD.RequestQuit += HandleQuitRequest;
-            LevelParamsMessenger.SendLevelParams += ReceiveLevelParams;
+            LevelParamsMessenger.SendLevelParams += PrepareLevel;
             FinishLine.FinishLineTriggered += OnFinishLineCrossed;
             SceneLoader.ReturnedToMainMenu += ResetCumulativeStats;
         }
@@ -69,12 +52,6 @@ namespace LGShuttle.Game
         {
             cumulativeStats = new();
             levelState = new();
-        }
-
-        private void ReceiveLevelParams(LevelParams levelParams)
-        {
-            PrepareLevel(levelParams);
-            //StartLevel();
         }
 
         public void PrepareLevel(LevelParams levelParams)
@@ -124,20 +101,6 @@ namespace LGShuttle.Game
             }
         }
 
-        //public async void LoadNextLevel()
-        //{
-        //    Debug.Log("load next level here!");
-        //    await SceneLoader.ReloadScene();
-        //}
-
-        //public void FailLevel()
-        //{
-        //    Debug.Log("Level failed");
-        //    EndGame();
-        //    //and maybe an event that will trigger some "LEVEL FAILED" UI,
-        //    //and then scene manager will restart the scene
-        //}
-
         private async void TimeOutHandler()
         {
             if (levelState.gameRunning)
@@ -182,7 +145,6 @@ namespace LGShuttle.Game
 
             if (levelState.gameRunning && levelState.remaining == 0)
             {
-                //FailLevel();
                 await EndLevel(LevelCompletionResult.failed);
             }
         }
@@ -221,7 +183,7 @@ namespace LGShuttle.Game
             GameHUD.RequestStart -= StartLevel;
             GameHUD.RequestRestart -= HandleRestartRequest;
             GameHUD.RequestQuit -= HandleQuitRequest;
-            LevelParamsMessenger.SendLevelParams -= ReceiveLevelParams;
+            LevelParamsMessenger.SendLevelParams -= PrepareLevel;
             FinishLine.FinishLineTriggered -= OnFinishLineCrossed;
             SceneLoader.ReturnedToMainMenu -= ResetCumulativeStats;
         }

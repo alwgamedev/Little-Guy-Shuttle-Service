@@ -66,8 +66,6 @@ namespace LGShuttle.SceneManagement
             await UniTask.WhenAll(s, t());
 
             ao.allowSceneActivation = true;
-
-            //await sceneFader.FadeHide(sceneFadeTime, GlobalGameTools.Instance.CTS.Token);
         }
     }
 }

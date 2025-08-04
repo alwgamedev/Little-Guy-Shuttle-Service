@@ -11,8 +11,6 @@ namespace LGShuttle.Game
         public int TotalLGKilledOnPassedLevels { get; private set; }
         public int TotalLGTransported { get; private set; }
         public float CompletionTime { get; private set; }
-        //public float TotalTimeLimit { get; private set; }
-        //public float TotalTimeRemaining { get; private set; }
         public int TotalScore { get; private set; }
         public int TotalStars { get; private set; }
 
@@ -21,7 +19,6 @@ namespace LGShuttle.Game
             get
             {
                 //if ended game without completing all levels, then we should include last attempted level
-                //in the denominator
                 float l = LevelsCompleted < SceneLoader.NumLevels ? LevelsCompleted + 1 : LevelsCompleted;
                 return TotalAttempts / l;
             }
@@ -70,8 +67,6 @@ namespace LGShuttle.Game
             TotalLGKilledOnPassedLevels += killed;
             TotalLGTransported += stats.lgSurvived;
             CompletionTime += stats.timeLimit - stats.timeRemaining;
-            //TotalTimeLimit += stats.timeLimit;
-            //TotalTimeRemaining += stats.timeRemaining;
             TotalScore += stats.totalScore;
             TotalStars += stats.starRating;
         }

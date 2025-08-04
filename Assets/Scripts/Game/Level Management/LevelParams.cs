@@ -10,7 +10,6 @@ namespace LGShuttle.Game
         public int lgToSpawn;
         public int timeLimit;
         public int completionBonus;
-        //[Range(0, 1)] public float survivalRate;
 
         public int AdjustedCompletionBonus(int attempts)
         {

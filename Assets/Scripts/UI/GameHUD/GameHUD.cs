@@ -19,7 +19,6 @@ namespace LGShuttle.UI
         [SerializeField] float goAnimFrameLength;
         [SerializeField] Color goAnimPrimaryColor;
         [SerializeField] Color goAnimSecondaryColor;
-        //[SerializeField] HidableUI controlsText;
 
         TextMeshProUGUI goText;
         LevelTimerUI timer;
@@ -31,7 +30,6 @@ namespace LGShuttle.UI
         public static event Action RequestStart;
         public static event Action RequestRestart;
         public static event Action RequestQuit;
-        //public static event Action RequestNextLevel;
 
         private void Awake()
         {
@@ -45,7 +43,6 @@ namespace LGShuttle.UI
         private void OnEnable()
         {
             LevelManager.LevelPrepared += OnLevelPrepared;
-            //LevelManager.LevelStarted += OnLevelStarted;
             LevelManager.LGDeath += OnLGDeath;
             LevelManager.LevelEnded += OnLevelEnded;
             restartUI.Confirmed += SendRestartRequest;
@@ -83,13 +80,7 @@ namespace LGShuttle.UI
             var b = GoAnimationAndStart(goAnimFrameLength, GlobalGameTools.Instance.CTS.Token);
 
             await UniTask.WhenAll(a(), b);
-
         }
-
-        //private async void OnLevelStarted(ILevelManager levelManager)
-        //{
-            
-        //}
 
         private void OnLGDeath(ILevelManager levelManager)
         {
@@ -167,7 +158,6 @@ namespace LGShuttle.UI
             var b = survivalCounter.FadeShow(uiFadeTime, token);
             var c = restartUI.FadeShow(uiFadeTime, token);
             var d = escToMenuUI.FadeShow(uiFadeTime, token);
-            //var e = controlsText.FadeShow(uiFadeTime, GlobalGameTools.Instance.CTS.Token);
             await UniTask.WhenAll(a, b, c, d);
         }
 
@@ -177,7 +167,6 @@ namespace LGShuttle.UI
             var b = survivalCounter.FadeHide(uiFadeTime / 2, token);
             var c = restartUI.FadeHide(uiFadeTime / 2, token);
             var d = escToMenuUI.FadeHide(uiFadeTime / 2, token);
-            //var e = controlsText.FadeHide(uiFadeTime / 2, GlobalGameTools.Instance.CTS.Token);
             await UniTask.WhenAll(a, b, c, d);
         }
 
@@ -232,7 +221,6 @@ namespace LGShuttle.UI
         private void OnDisable()
         {
             LevelManager.LevelPrepared -= OnLevelPrepared;
-            //LevelManager.LevelStarted -= OnLevelStarted;
             LevelManager.LGDeath -= OnLGDeath;
             LevelManager.LevelEnded -= OnLevelEnded;
             restartUI.Confirmed -= SendRestartRequest;

@@ -19,7 +19,7 @@ namespace LGShuttle.UI
 
         private void Awake()
         {
-            //we will never have competing instances thanks to Persistent Objects Spawner
+            //(will never have competing instances bc of persistent objects spawner)
             Instance = this;
             StartMenu = GetComponentInChildren<StartMenu>();
             GameHUD = GetComponentInChildren<GameHUD>();

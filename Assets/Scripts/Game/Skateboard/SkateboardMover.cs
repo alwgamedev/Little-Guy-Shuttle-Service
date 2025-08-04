@@ -120,7 +120,7 @@ namespace LGShuttle.Game
         private void Accelerate(int direction, float goalSpeed, float acceleration, float wheelTorque)
         {
             var u = Grounded ? board.transform.right : Vector3.right;
-            //^otherwise you can rotate the board to a steep angle and fly through the air
+            //^otherwise you can fly
             var s = Vector2.Dot(Board.linearVelocity, direction * u);
             var f = (goalSpeed - s) * acceleration * TotalMass * direction * u;
             Board.AddForce(f);

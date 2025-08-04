@@ -8,7 +8,7 @@ namespace LGShuttle.Core
 
         bool thisIsSpawner;
 
-        public static bool hasSpawned;
+        static bool hasSpawned;
 
         private void Awake()
         {
